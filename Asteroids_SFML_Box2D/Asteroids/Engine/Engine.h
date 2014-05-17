@@ -63,7 +63,7 @@ public:
 	/**
 	 * Renders all the existing GameObjects to the screen
 	 */
-	void Render();
+	void Render(sf::Time globalTime);
 
 	//Default Constructor
 	Engine();

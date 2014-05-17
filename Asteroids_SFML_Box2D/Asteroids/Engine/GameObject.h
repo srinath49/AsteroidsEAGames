@@ -8,12 +8,20 @@
 #include "Layer.h"
 #include "TextureManager.h"
 #include "Texture.h"
+#include "AnimatedSprite.hpp"
+#include "Animation.h"
 
 class Engine;
 class Layer;
 class TextureManager;
 
 struct TextureEntry;
+
+struct	AnimationData
+{
+	string animName;
+	Animation anim;
+};
 
 using namespace std;
 
@@ -154,6 +162,21 @@ protected:
 	Texture* currentTexture;
 
 	/**
+	 *Stores all the animations inside an AnimationData list
+	 */
+	list<AnimationData> animations;
+
+	/**
+	 * An iterator for traversing the animations list
+	 */
+	list<AnimationData>::iterator anamationsIterator;
+
+	/**
+	 *	The Current Animation to Play
+	 */
+	Animation	currentAnim;
+
+	/**
 	 * The current shape of the collider
 	 */
 	ColliderType colliderType;
@@ -246,7 +269,7 @@ public:
 	 *
 	 * @param		m_d2dContext		A reference to the Direct2D device context, used by the engine to render the game object
 	 */
-	void Render(sf::RenderWindow* renderer);
+	void Render(sf::RenderWindow* renderer, sf::Time globalTime);
 
 	/**
 	 * This is a virtual function that should be implemented by the GameObject sub-classes.
@@ -671,21 +694,20 @@ public:
 	 */
 	bool IsTriggered();
 
-	//<--- Texture Setting
 	/**
 	 * Add a texture to the object's list of textures
 	 *
-	 * @param		m_TextureName		Filename of the new texture to add
-	 * @param		_IsSprite			is this texture an animated sprite
-	 * @param		_Rows				How many Rows does this texture have
-	 * @param		_Columns			How Many Columns does this texture have
+	 * @param		textureName			Filename of the new texture to add
+	 * @param		isSprite			is this texture an animated sprite
+	 * @param		rows				How many Rows does this texture have
+	 * @param		columns			How Many Columns does this texture have
 	 */
 	void AddTexture(string textureName, bool isSprite, int rows, int columns);		
 
 	/**
 	 * Sets the current texture of the object to the specified texture.
 	 *
-	 * @param		m_TextureName		Filename of the texture to set
+	 * @param		textureName		Filename of the texture to set
 	 */
 	void SetTexture(string textureName);
 
@@ -808,4 +830,19 @@ public:
 	 * Applies a damping value to the  velocity of the object
 	 */
 	void SetDamping(float damping);
+
+	/**
+	 *
+	 */
+	void AddAnimation(string animName, Animation anim);
+
+	/**
+	 *
+	 */
+	void SetCurrentAnimation(Animation anim){currentAnim = anim;}
+
+	/**
+	 *
+	 */
+	Animation GetCurrentAnimation(){return currentAnim;}
 };

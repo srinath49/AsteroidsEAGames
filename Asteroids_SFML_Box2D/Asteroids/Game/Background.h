@@ -21,6 +21,6 @@ public:
 	void OnPointerReleased(Vector2 _Point);
 	void OnPointerMoved(Vector2 _Point);
 
-	Player* batman;
+	//Player* batman;
 };
 

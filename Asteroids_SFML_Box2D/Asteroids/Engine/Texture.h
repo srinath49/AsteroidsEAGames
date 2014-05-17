@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <list>
+#include "AnimatedSprite.hpp"
 
 using namespace std;
 
@@ -18,8 +19,6 @@ private:
 
 	bool nextFrame;
 	bool pause;
-
-	sf::Time timer;
 
 public:
 	int textureID;
@@ -38,17 +37,18 @@ public:
 	bool isSprite;
 
 	sf::Texture* image;
-	sf::Sprite* sprite;
+	AnimatedSprite* sprite;
 	string textureName;
 
-	void SetSize(float width, float height);
-	void PlaySprite();
+	sf::Time globalTime;
+
+	void SetSize();
+	void PlaySprite(Animation anim);
 	void PauseSprite();
 	void ResumeSprite();
 	bool IsPlaying();
 	void SetFrameSpeed(float speed);
 	void SetTextureFrame(int frameNumber);
-	void SetCurrentSprite();
 	Texture();
 };
 

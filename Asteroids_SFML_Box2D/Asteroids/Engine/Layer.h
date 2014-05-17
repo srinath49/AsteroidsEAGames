@@ -17,7 +17,7 @@ class Layer
 		bool AddObjectToLayer(void * object);
 		void RemoveObject(string objectName);
 		GameObject * GetObjectByName(string objectName);
-		void Render(sf::RenderWindow *renderer); // Temporary
+		void Render(sf::RenderWindow *renderer, sf::Time globalTime);
 		void Destroy();
 		void Update(unsigned long frameNumber);
 		void AddRemoveObjects();

@@ -27,7 +27,7 @@ TextureEntry * TextureManager::AddTexture(Engine * engineRef, string textureName
 		tempTexture->image = tempTexture2->image;
 		texEnt2->refCount=1;
 		// Set width and of the texture
-		tempTexture->SetSize( tempTexture->image->getSize().x, tempTexture->image->getSize().y);
+		tempTexture->SetSize();
 		// Set the time animation play time
 		tempTexture->frameSpeed = 10.0f;
 		texEnt->texture = tempTexture;
@@ -41,7 +41,7 @@ TextureEntry * TextureManager::AddTexture(Engine * engineRef, string textureName
 		tempTexture=tex->texture;
 		tex->refCount=tex->refCount+1;
 			// Set width and of the texture
-		tempTexture->SetSize( tempTexture->image->getSize().x, tempTexture->image->getSize().y);
+		tempTexture->SetSize();
 		// Set the time animation play time
 		tempTexture->frameSpeed = 10.0f;
 		texEnt->texture = tempTexture;

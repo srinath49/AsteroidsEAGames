@@ -2,6 +2,8 @@
 #include "Layer.h"
 
 extern b2World* phyxWorld; 
+float meterToPixel = 50.0; //50 pixels to a meter
+
 
 GameObject::GameObject() : 
 	isActive(true),
@@ -74,7 +76,6 @@ GameObject::GameObject(string objectName, Engine* engineRef, bool isDynamic, boo
 		collisionBox->SetActive(false);
 	}
 
-
 	// Setting the original Height and widht
 	originalWidth = 1;
 	originalHeight = 1;
@@ -109,7 +110,9 @@ GameObject::GameObject(string objectName, Engine* engineRef, bool isDynamic, boo
 	AddTexture(_TextureName, _IsSprite, _Rows, _Columns);
 	//m_CurrentTexture->create(TextureHolder.front()->texture->getSize().x,TextureHolder.front()->texture->getSize().y);
 	currentTexture = textureHolder.front()->texture;
-	currentTexture->SetCurrentSprite();
+	//currentTexture->SetSize();
+	//currentTexture->SetCurrentSprite();
+
 	
 	// Setting the game object Position
 	position.x = _Position.x;
@@ -290,20 +293,28 @@ void GameObject::Destroy()
 	GetMyLayer()->RemoveObject(name);
 }
 
-void GameObject::Render(sf::RenderWindow* renderer)
+void GameObject::Render(sf::RenderWindow* renderer, sf::Time globalTime)
 {  
 	if (!isActive) return; //Easy way to prevent this gameobject from being rendered
-	
+
+	widthScreen = renderer->getSize().x;
+	heightScreen = renderer->getSize().y;
+	offsetX = (widthScreen*0.5f)/meterToPixel; //x offset in meters (400/50 = 8). This will put the 0 x-coordinate in the middle of the screen horizontally.
+	offsetY = (heightScreen*0.5f)/meterToPixel; //y offset in meters (300/50 = 6). This will put the 0 y-coordinate in the middle of the screen vertically.
+	drawPositionX = (position.x + offsetX) * meterToPixel; //( (0m) +  8.0m )* 50 = 400 pixels
+	drawPositionY = (-position.y + offsetY) * meterToPixel; //( -(4m) + 6.0m ) * 50 = 100 pixels
+
 	currentTexture->sprite->setRotation(GetRotationAngle());
-	currentTexture->sprite->setPosition(position.x, position.y);
+	currentTexture->sprite->setPosition(drawPositionX, drawPositionY);
 	currentTexture->sprite->setScale(xDrawScale, yDrawScale);
+	currentTexture->globalTime = globalTime;
 	
 	
 	// If the Texture is null then no need to draw a bitmap
 	if(currentTexture != nullptr)
 	{
 		// Set the current texture
-		currentTexture->PlaySprite();
+		currentTexture->PlaySprite(currentAnim);
 		// Draw Bitmap
 		renderer->draw(*currentTexture->sprite, sf::RenderStates::Default);
 	}
@@ -547,19 +558,19 @@ void GameObject::FixRotation(bool fixRot)
 void GameObject::PlaySpriteTexture()
 {	
 	SetTextureFrame(0);
-	//m_CurrentTexture->ResumeSprite();
+	currentTexture->ResumeSprite();
 }
 
 // Pause the animation for the texture
 void GameObject::PauseSpriteTexture()
 {	
-	//m_CurrentTexture->PauseSprite();
+	currentTexture->PauseSprite();
 }
 	
 // Resume the animation for the texture
 void GameObject::ResumeSpriteTexture()
 {	
-	//m_CurrentTexture->ResumeSprite();
+	currentTexture->ResumeSprite();
 }
 
 // Set the default frame 
@@ -571,20 +582,20 @@ void GameObject::SetTextureFrame()
 // Setting the animation speed of sprite texture 
 void GameObject::SetAnimationSpeed(float speed)
 {
-	//m_CurrentTexture->SetFrameSpeed(_Speed);
+	currentTexture->SetFrameSpeed(speed);
 }
 
 // Set the given frame 
 void GameObject::SetTextureFrame(int frameNumber)
 {
-	//m_CurrentTexture->SetTextureFrame(_FrameNumber);
+	currentTexture->SetTextureFrame(frameNumber);
 }
 
 // Return the current Texture Frame number
 int GameObject::GetCurrentTextureFrame()
 {
-	//return m_CurrentTexture->CurrentFrame;
-	return 0;
+	return currentTexture->currentFrame;
+	//return 0;
 }
 
 // Is the Texture Playing 
@@ -754,3 +765,10 @@ void GameObject::SetCollisionToCustom(const b2Vec2* vertices,int numOfVertices)
 	 yCollisionScale=1;
 }
 
+void GameObject::AddAnimation(string animName, Animation newAnim)
+{
+	AnimationData newData;
+	newData.animName = animName;
+	newData.anim = newAnim;
+	animations.push_back(newData);
+}

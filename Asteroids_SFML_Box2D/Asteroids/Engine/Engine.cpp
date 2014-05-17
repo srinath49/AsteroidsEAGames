@@ -81,7 +81,7 @@ int Engine::AddLayer()
 	 return layerCount-1;
 }
 
-void Engine::Render()
+void Engine::Render(sf::Time globalTime)
 {
 	// Step the physics world
 	phyxWorld->Step(1.0f/30.0f, 6, 2);
@@ -105,7 +105,7 @@ void Engine::Render()
 	{
 		if (layers[i]!=nullptr)
 		{
-			layers[i]->Render(renderer);
+			layers[i]->Render(renderer, globalTime);
 		}
 	}
 

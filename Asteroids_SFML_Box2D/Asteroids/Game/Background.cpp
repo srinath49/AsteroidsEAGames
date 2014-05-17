@@ -12,7 +12,7 @@ void Background::EndContact(GameObject*)
 
 void Background::Start()
 {
-	//IsTrigger(true);
+	
 }
 
 void Background::Update(unsigned long frameNumber)

@@ -17,90 +17,40 @@ Total Frames = 12
 
 Texture::Texture()
 {
-	timer = sf::seconds(1.0f/60);
 	currentFrame = 0;
 	currentColumn = 0;
 	currentRow = 0;
 	nextFrame = true;
-	pause = false;
+	pause = true;
 	image = new sf::Texture();
-	sprite = new sf::Sprite();
+	sprite = new AnimatedSprite(sf::seconds(6.0f), true, true);	
 }
 
-void Texture::SetSize(float width, float height)
+void Texture::SetSize()
 {
+	float w = image->getSize().x;
+	float h = image->getSize().y;
+
 	if(isSprite)
 	{
-		width = width/columns;
-		height = height/rows;
+		width = w/columns;
+		height = h/rows;
 	}
 	else
 	{
-		width = width;
-		height = height;
+		width = w;
+		height = h;
 	}
 
 	numOfFrames = rows*columns;
 }
 
-void Texture::PlaySprite()
+void Texture::PlaySprite(Animation anim)
 {
 	if(!pause)
 	{
-		float timeForSingleRow = (1/frameSpeed)/rows;
-		float timeForSingleColum = (1/frameSpeed)/columns;
-
-		if(isSprite && (frameSpeed>0) )
-		{
-		
-			#pragma region Single Frame
-				
-				sprite->setTextureRect(sf::IntRect(currentColumn*32,currentRow*32,width,height));
-
-				frameLeft = width  * currentColumn;	
-				frameRight = width + (width  * currentColumn);
-
-				frameTop = height * currentRow;
-				frameBotom = height + ( height  * currentRow);
-
-				sf::Clock clock;
-				if(nextFrame)
-				{
-					frameStartTime = clock.getElapsedTime().asSeconds()/60;
-					nextFrame = false;
-				}
-
-				if((clock.getElapsedTime().asSeconds()/60 - frameStartTime) >= timeForSingleRow)
-				{
-					currentColumn++;
-					nextFrame = true;
-				
-					currentFrame++;
-				}
-				clock.restart();
-
-				if(currentColumn >= columns )
-				{
-					currentColumn = 0;
-					currentRow++;
-				}
-
-				if(currentRow >= rows)
-				{
-					currentRow = 0;
-					currentFrame = 0;
-				}
-			#pragma endregion
-				
-		}
-		else
-		{
-			frameLeft = 0;
-			frameRight = width;
-
-			frameTop = 0;
-			frameBotom = height;
-		}
+		sprite->play(anim); 
+		sprite->update(globalTime);
 	}
 
 }
@@ -108,11 +58,13 @@ void Texture::PlaySprite()
 void Texture::PauseSprite()
 {
 	pause = true;
+	sprite->pause();
 }
 
 void Texture::ResumeSprite()
 {
 	pause = false;
+	sprite->play();
 }
 
 // Set the frame according to given frame number
@@ -155,12 +107,3 @@ void Texture::SetFrameSpeed(float speed)
 {
 	frameSpeed = speed;
 }	
-
-void Texture::SetCurrentSprite()
-{
-	sprite->setTexture(*image, true);
-	if(isSprite)
-	{
-		sprite->setTextureRect(sf::IntRect(currentColumn*32,currentRow*32,width,height));
-	}
-}

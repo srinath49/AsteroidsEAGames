@@ -8,7 +8,20 @@ void CharacterObject::BeginContact(GameObject*){}
 
 void CharacterObject::EndContact(GameObject*){}
 
-void CharacterObject::Start(){pointerPressed = false;}
+void CharacterObject::Start()
+{
+	Animation anim;
+	anim.setSpriteSheet(*currentTexture->image);
+    anim.addFrame(sf::IntRect(0, 0, 64, 64));
+    anim.addFrame(sf::IntRect(32, 0, 64, 64));
+    anim.addFrame(sf::IntRect(64, 0, 64, 64));
+    anim.addFrame(sf::IntRect(96, 0, 64, 64));
+
+	AddAnimation("anim", anim);
+	currentAnim = anim;
+	currentTexture->ResumeSprite();
+	pointerPressed = false;
+}
 
 void CharacterObject::Update(unsigned long frameNumber){}
 

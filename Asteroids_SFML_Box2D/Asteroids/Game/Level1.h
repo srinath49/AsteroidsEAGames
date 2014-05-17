@@ -2,6 +2,7 @@
 
 #include "Engine/Level.h"
 #include "Engine/GameObject.h"
+#include "CharacterObject.h"
 
 class Level1 : public Level
 {
@@ -22,5 +23,5 @@ private:
 	// Layer numbers
 	int BackgroundLayer;
 
-	GameObject* Bgrd;
+	CharacterObject* Bgrd;
 };

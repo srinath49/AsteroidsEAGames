@@ -80,6 +80,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\AnimatedSprite.cpp" />
+    <ClCompile Include="Engine\Animation.cpp" />
     <ClCompile Include="Engine\Controller.cpp" />
     <ClCompile Include="Engine\CollisionListener.cpp" />
     <ClCompile Include="Engine\GameObject.cpp" />
@@ -99,6 +101,8 @@
     <ClCompile Include="Engine\MyQueryCallback.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\AnimatedSprite.hpp" />
+    <ClInclude Include="Engine\Animation.h" />
     <ClInclude Include="Engine\BasicMath.h" />
     <ClInclude Include="Engine\Controller.h" />
     <ClInclude Include="Engine\CollisionListener.h" />

@@ -2,23 +2,30 @@
 #include "Engine/Engine.h"
 #include "Game/Game.h"
 
+
+sf::RenderWindow* rWin;
+Game* gameEngine;
+
+
 int main(int argc, char** argv)
 {
-	Game* gameEngine = new Game();
+	gameEngine = new Game();
 
 	//Initialise Game Engine
 	gameEngine->Initialize();
 
-	sf::RenderWindow* rWin = gameEngine->GetRenderer();
+	rWin = gameEngine->GetRenderer();
 
 	//Create Game Window
 	rWin->create(sf::VideoMode(800, 600), "Game Window");
-	rWin->setFramerateLimit(30);
+	rWin->setFramerateLimit(60);
 
 	//Start Game Engine
 	gameEngine->Start();
 	
-	sf::Clock clock;
+	sf::Clock globalClock;
+	sf::Time globalTime;
+	globalTime = globalClock.restart();
 	// Game Loop
 	while(rWin->isOpen())
 	{
@@ -31,21 +38,29 @@ int main(int argc, char** argv)
 				rWin->close();
 				return 0;
 			}
+		}
 
-			//Clear the window with black color
-			rWin->clear(sf::Color::Black);
-			//Render all Game Objects
-			gameEngine->Render();
-			//Display to Screen
-			rWin->display();
-
-			clock.restart();
-			sf::Time elapsed = clock.getElapsedTime();
-			while( ( (elapsed.asSeconds()) <= 1.0f/45) )
-			{
-				elapsed = clock.getElapsedTime();
-			}
-        }
+		//Clear the window with black color
+		rWin->clear(sf::Color::White);
+		//Render all Game Objects
+		globalTime = globalClock.getElapsedTime();
+		gameEngine->Render(globalTime);
+		//Display to Screen
+		rWin->display();
+		float frames = globalTime.asSeconds();
+		if(frames > 6.0f)
+		{
+			globalTime = globalClock.restart();
+		}
+		/*
+		clock.restart();
+		sf::Time elapsed = clock.getElapsedTime();
+		while( ( (elapsed.asSeconds()) <= 1.0f/45) )
+		{
+			elapsed = clock.getElapsedTime();
+		}
+		*/
+        
 	}
 
 	return 0;
