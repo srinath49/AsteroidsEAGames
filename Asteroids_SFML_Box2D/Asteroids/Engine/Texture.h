@@ -48,6 +48,7 @@ public:
 	bool IsPlaying();
 	void SetFrameSpeed(float speed);
 	void SetTextureFrame(int frameNumber);
+	void SetCurrentSprite();
 	Texture();
 };
 

@@ -23,6 +23,8 @@ Texture::Texture()
 	currentRow = 0;
 	nextFrame = true;
 	pause = false;
+	image = new sf::Texture();
+	sprite = new sf::Sprite();
 }
 
 void Texture::SetSize(float width, float height)
@@ -93,7 +95,6 @@ void Texture::PlaySprite()
 		}
 		else
 		{
-			sprite->setTexture(*image, true);
 			frameLeft = 0;
 			frameRight = width;
 
@@ -154,3 +155,12 @@ void Texture::SetFrameSpeed(float speed)
 {
 	frameSpeed = speed;
 }	
+
+void Texture::SetCurrentSprite()
+{
+	sprite->setTexture(*image, true);
+	if(isSprite)
+	{
+		sprite->setTextureRect(sf::IntRect(currentColumn*32,currentRow*32,width,height));
+	}
+}

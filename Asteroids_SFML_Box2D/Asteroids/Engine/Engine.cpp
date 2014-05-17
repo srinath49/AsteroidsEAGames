@@ -5,11 +5,12 @@
 #include "CollisionListener.h"
 #include "GameObject.h"
 #include "Layer.h"
+#include "TextureManager.h"
 
 class b2World;
 
 // Initialize Box2D Physics 
-b2World* world;
+b2World* phyxWorld;
 b2Fixture* fix;
 b2Vec2 gravity(0.0f, -10.0f);
 b2World myWorld(gravity);
@@ -26,13 +27,16 @@ Engine::Engine():
 void Engine::Initialize()
 {
 	// Initializing Box2D 
-	world = &myWorld;
+	phyxWorld = &myWorld;
 	CollisionListener* gcl = new CollisionListener();
-	world->SetContactListener(gcl);
+	phyxWorld->SetContactListener(gcl);
 	
 	textureManager = new TextureManager();
 
 	frameChanged = false;
+
+	//Initialise Game Window
+	renderer = new sf::RenderWindow();
 }
 
 
@@ -80,7 +84,7 @@ int Engine::AddLayer()
 void Engine::Render()
 {
 	// Step the physics world
-	world->Step(1.0f/30.0f, 6, 2);
+	phyxWorld->Step(1.0f/30.0f, 6, 2);
 
 	// Start drawing 
 

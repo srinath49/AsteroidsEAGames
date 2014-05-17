@@ -6,12 +6,10 @@ int main(int argc, char** argv)
 {
 	Game* gameEngine = new Game();
 
-	sf::RenderWindow* rWin = gameEngine->GetRenderer();
-
-	//Initialise Game Window
-	rWin = new sf::RenderWindow();
 	//Initialise Game Engine
 	gameEngine->Initialize();
+
+	sf::RenderWindow* rWin = gameEngine->GetRenderer();
 
 	//Create Game Window
 	rWin->create(sf::VideoMode(800, 600), "Game Window");
@@ -19,7 +17,8 @@ int main(int argc, char** argv)
 
 	//Start Game Engine
 	gameEngine->Start();
-
+	
+	sf::Clock clock;
 	// Game Loop
 	while(rWin->isOpen())
 	{
@@ -40,15 +39,12 @@ int main(int argc, char** argv)
 			//Display to Screen
 			rWin->display();
 
-			sf::Clock clock;
+			clock.restart();
 			sf::Time elapsed = clock.getElapsedTime();
-			while( ( (elapsed.asSeconds()) <= 1.0f/30) )
+			while( ( (elapsed.asSeconds()) <= 1.0f/45) )
 			{
 				elapsed = clock.getElapsedTime();
-				//printf("%f\n", elapsed.asSeconds());
-				//DoNothing
 			}
-			clock.restart();
         }
 	}
 

@@ -1,11 +1,7 @@
 #include "GameObject.h"
 #include "Layer.h"
 
-b2World* phyxWorld; 
-//float rot=0;
-//float meterToPixel = 50.0; //50 pixels to a meter
-
-//Engine * GameObject::engineRef;
+extern b2World* phyxWorld; 
 
 GameObject::GameObject() : 
 	isActive(true),
@@ -105,7 +101,7 @@ GameObject::GameObject(string objectName, Engine* engineRef, bool isDynamic, boo
 	yCollisionScale=1;
 
 	// Ref to main Class 
-	engineRef = engineRef;
+	this->engineRef = engineRef;
 
 	// Setting the gameobject name 
 	name=objectName;
@@ -113,6 +109,7 @@ GameObject::GameObject(string objectName, Engine* engineRef, bool isDynamic, boo
 	AddTexture(_TextureName, _IsSprite, _Rows, _Columns);
 	//m_CurrentTexture->create(TextureHolder.front()->texture->getSize().x,TextureHolder.front()->texture->getSize().y);
 	currentTexture = textureHolder.front()->texture;
+	currentTexture->SetCurrentSprite();
 	
 	// Setting the game object Position
 	position.x = _Position.x;
@@ -215,10 +212,6 @@ bool GameObject::CompareName(string TestTo)
 void GameObject::AddTexture(string textureName, bool isSprite, int rows, int columns)
 {
 	textureHolder.push_back(engineRef->textureManager->AddTexture(engineRef, textureName, isSprite, rows, columns));	
-	//TextureEntry tmpEntry;
-	//tmpEntry.textureName = textureName;
-	//tmpEntry.refCount;
-	//textureHolder.push_back(tmpEntry);	
 }
 
 // Sets the current Texture to the one specified if it exists in the game object's texture list
