@@ -43,7 +43,7 @@ bool LevelManager::ReloadLevel()
 
 void LevelManager::CreateLevel(Level* newLevel)
 {
-	if(newLevel && newLevel->levelNumber < TotalLevels)
+	if(newLevel != nullptr && newLevel->levelNumber < TotalLevels)
 	{
 		if(LevelsCreated[newLevel->levelNumber])
 		{

@@ -8,7 +8,7 @@ void Level1::CreateLayers()
 
 void Level1::CreateGameObjects()
 {
-	Bgrd = new Background("ScreenBackground" , gameLoop , false , false , Vector2(0 , 0) , "ScreenBackground.png" , false , 1 , 1);
+	Bgrd = new GameObject("ScreenBackground", gameLoop , false , false , Vector2(0 , 0) , "ScreenBackground.png" , false , 1 , 1);
 }
 
 void Level1::AddObjectsToLayers()

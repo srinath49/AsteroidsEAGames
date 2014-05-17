@@ -120,4 +120,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\ScreenBackground.png">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

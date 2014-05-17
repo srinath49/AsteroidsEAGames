@@ -214,9 +214,10 @@ bool GameObject::CompareName(string TestTo)
 // Adds a Texture or Spritesheet to the list of the already existing Textures, if any
 void GameObject::AddTexture(string textureName, bool isSprite, int rows, int columns)
 {
-	TextureEntry tmpEntry;
-	tmpEntry.textureName = textureName;
-	tmpEntry.refCount;
+	textureHolder.push_back(engineRef->textureManager->AddTexture(engineRef, textureName, isSprite, rows, columns));	
+	//TextureEntry tmpEntry;
+	//tmpEntry.textureName = textureName;
+	//tmpEntry.refCount;
 	//textureHolder.push_back(tmpEntry);	
 }
 

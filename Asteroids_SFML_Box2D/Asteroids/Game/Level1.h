@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Engine/Level.h"
-#include "Background.h"
+#include "Engine/GameObject.h"
 
 class Level1 : public Level
 {
@@ -22,5 +22,5 @@ private:
 	// Layer numbers
 	int BackgroundLayer;
 
-	Background* Bgrd;
+	GameObject* Bgrd;
 };

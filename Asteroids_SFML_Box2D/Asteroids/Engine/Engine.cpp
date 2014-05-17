@@ -3,6 +3,8 @@
 #include <windows.h>
 #include <sstream>
 #include "CollisionListener.h"
+#include "GameObject.h"
+#include "Layer.h"
 
 class b2World;
 
@@ -27,11 +29,9 @@ void Engine::Initialize()
 	world = &myWorld;
 	CollisionListener* gcl = new CollisionListener();
 	world->SetContactListener(gcl);
-
-	//Initialise Game Window
-	renderer.create(sf::VideoMode(800, 600), "Game Window");
-	renderer.setFramerateLimit(30);
 	
+	textureManager = new TextureManager();
+
 	frameChanged = false;
 }
 
@@ -83,29 +83,14 @@ void Engine::Render()
 	world->Step(1.0f/30.0f, 6, 2);
 
 	// Start drawing 
-    
-	if(renderer.isOpen())
-    {
-        // check all the window's events that were triggered since the last iteration of the loop
-        sf::Event event;
-        while (renderer.pollEvent(event))
-        {
-            // "close requested" event: we close the window
-            if (event.type == sf::Event::Closed)
-                renderer.close();
-        }
-
-        // clear the window with black color
-        renderer.clear(sf::Color::Black);
-    }
 
 	//Update Loop
 	//Fire the update function on all gameobjects
 	for(int i=0; i<layerCount; i++)
 	{
-		if (m_Layers[i]!=nullptr)
+		if (layers[i]!=nullptr)
 		{
-			m_Layers[i]->Update(frameNumber);
+			layers[i]->Update(frameNumber);
 		}
 	}
 
@@ -114,9 +99,9 @@ void Engine::Render()
 	//This will loop through all the layers and update them
 	for(int i=0; i<layerCount; i++)
 	{
-		if (m_Layers[i]!=nullptr)
+		if (layers[i]!=nullptr)
 		{
-			m_Layers[i]->Render(&renderer);
+			layers[i]->Render(renderer);
 		}
 	}
 
@@ -124,23 +109,21 @@ void Engine::Render()
 	//This loop will remove any objects which are flagged for deletion
 	for(int i=0; i<layerCount; i++)
 	{
-		if (m_Layers[i]!=nullptr)
+		if (layers[i]!=nullptr)
 		{
-			m_Layers[i]->AddRemoveObjects();
-			if (m_Layers[i]->layerDeleted)
+			layers[i]->AddRemoveObjects();
+			if (layers[i]->layerDeleted)
 			{
 				//delete(m_Layers[i]);
 				for(int x=i+1; x<layerCount; x++)
 				{
-					m_Layers[x-1] = m_Layers[x];
+					layers[x-1] = layers[x];
 				}
 				layerCount--;
-				m_Layers[i] = nullptr;
+				layers[i] = nullptr;
 			}
 		}
 	}
-
-	renderer.display();
    
 }
 

@@ -1,9 +1,7 @@
 #pragma once
 
-#include "GameObject.h"
 #include "Controller.h"
 #include <string>
-#include "Layer.h"
 #include "Box2D.h"
 #include <SFML/Graphics.hpp>
 #include "BasicMath.h"
@@ -41,7 +39,7 @@ private:
 	MyQueryCallback queryCallback;
 
 protected:
-	sf::RenderWindow renderer;
+	sf::RenderWindow* renderer;
 	
 	b2Body*			 phyxBody;
 	b2Fixture*		 phyxFix;
@@ -55,6 +53,8 @@ protected:
 
 public:
 
+	TextureManager * textureManager;
+
 	/**
 	 * Initializes the Engine class. Sets references to the Direct2d Device, Direct2D Device Context, creates the Engine camera, TextureManager, AudioManager, Physics world etc.
 	 */
@@ -67,6 +67,13 @@ public:
 
 	//Default Constructor
 	Engine();
+
+	/**
+	 * Returns a reference to the render window
+	 * 
+	 * @return	renderer	The SFML RenderWindow object reference
+	 */
+	sf::RenderWindow* GetRenderer(){return renderer;}
 
 	/**
 	 * Adds a New Layer to the game and gives the current count of the layers

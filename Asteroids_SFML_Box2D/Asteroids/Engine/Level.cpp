@@ -4,8 +4,8 @@
 Level::Level(Game* gameLoop, int levelNumber)
 {
 	layersAdded = false;
-	levelNumber = levelNumber;
-	gameLoop = gameLoop;
+	this->levelNumber = levelNumber;
+	this->gameLoop = gameLoop;
 	SetLevelState(LevelLoading);
 }
 
