@@ -9,16 +9,9 @@ class Player : public CharacterObject
 	public:
 	enum  PlayerState
 	{
-		IdleState,
-		WalkingState,
-		RunningState,
-		Attack1,
-		Attack2,
-		PlayerDied,
-		PlayerWon,
-		PlayerLost,
-		CollidedWithTemp,
-		WaitingState
+		MovingState,
+		DyingState,
+		DeadState
 	};
 
 	Player() : CharacterObject(){}

@@ -293,7 +293,8 @@ public:
 	 *
 	 * @param		collisionObject			The game object that this object collided with
 	 */
-	virtual void Collided(GameObject * collisionObject) {}
+	virtual void BeginContact(GameObject* object){}
+	virtual void EndContact(GameObject* object){}
 
 	/**
 	 * This is a virtual function that should be implemented by the GameObject sub-classes

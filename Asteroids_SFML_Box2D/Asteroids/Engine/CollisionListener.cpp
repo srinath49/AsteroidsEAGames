@@ -19,10 +19,10 @@ void CollisionListener::BeginContact(b2Contact* contact)
 	object2 = (GameObject*)contact->GetFixtureB()->GetBody()->GetUserData();
 	if(object1 != nullptr)
 	{
-		object1->Collided(object2);
+		object1->BeginContact(object2);
 	}
 	if(object2 != nullptr)
 	{
-		object2->Collided(object1);
+		object2->BeginContact(object1);
 	}
 } 

@@ -45,13 +45,5 @@ LevelState Level::GetLevelState()
 
 void Level::DeleteAllGameObjects()
 {
-	/*
-	for(int i = 0; i < gameEngine->GetLayerCount(); i++)
-	{
-		if(gameEngine->LayerExists(i))
-		{
-			gameEngine->DeleteLayer(i);
-		}
-	}
-	*/
+	//gameEngine->g
 }

@@ -93,7 +93,7 @@ public:
 	GameState GetGameState();
 
 	void RequestLevelLoad(int levelToLoad);
-	void RequestLevelReload();
+	void RequestLevelReload(int levelToLoad);
 	void RequestNextLevelLoad();
 
 private:

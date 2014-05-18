@@ -92,5 +92,9 @@ public:
 	LevelState currentState;
 	LevelState previousState;
 
+	list<GameObject*> levelObjs;
+
+	list<GameObject*>::iterator levelObjsIterator; 
+
 	bool layersAdded;
 };

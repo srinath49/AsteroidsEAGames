@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Engine\Layer.h"
 #include "Game\Level1.h"
+#include "MenuScreenLevel.h"
 
 
 void Game::Start()
@@ -8,9 +9,11 @@ void Game::Start()
 	previousLevel = 0;
 	currentLevel = 0;
 
-	levelManager = new LevelManager(this, 1);
-	levelManager->CreateLevel(new Level1(this, 0));
+	levelManager = new LevelManager(this, 2);
+	levelManager->CreateLevel(new MenuScreenLevel(this, 0));
+	levelManager->CreateLevel(new Level1(this, 1));
 	LoadLevel(0);
+	//currentLevel = levelManager->GetCurrentLevel()->levelNumber;
 }
 
 void Game::Update(unsigned long frameNumber)
@@ -30,7 +33,7 @@ void Game::Update(unsigned long frameNumber)
 			}
 			break;
 		case GameState::ReloadTheLevel: 
-			RequestLevelReload();
+			RequestLevelReload(levelToLoad);
 			break;
 		case GameState::LoadingLevel: 
 			if(levelManager && levelManager->GetCurrentLevel()->GetLevelState() == LevelState::LevelLoaded)
@@ -98,6 +101,7 @@ void Game::OnKeyReleased(sf::Keyboard::Key key)
 void Game::LoadLevel(int level)
 {
 	//ResetWayPoints();
+
 	if(levelManager)
 	{
 		if(levelManager->LoadLevel(level))
@@ -158,11 +162,11 @@ GameState Game::GetGameState()
 
 void Game::RequestLevelLoad(int levelToLoad)
 {
-	levelToLoad = levelToLoad;
+	this->levelToLoad = levelToLoad;
 	SetGameState(GameState::RequestForLevelLoad);
 }
 
-void Game::RequestLevelReload()
+void Game::RequestLevelReload(int LevelToLoad)
 {
 	RequestLevelLoad(currentLevel);
 }
