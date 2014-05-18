@@ -23,7 +23,8 @@ Texture::Texture()
 	nextFrame = true;
 	pause = true;
 	image = new sf::Texture();
-	sprite = new AnimatedSprite(sf::seconds(6.0f), true, true);	
+	//sprite = new AnimatedSprite(sf::seconds(6.0f), true, true);	
+	sprite = new sf::Sprite();
 }
 
 void Texture::SetSize()
@@ -45,12 +46,57 @@ void Texture::SetSize()
 	numOfFrames = rows*columns;
 }
 
-void Texture::PlaySprite(Animation anim)
+void Texture::PlaySprite(/*Animation anim*/)
 {
 	if(!pause)
 	{
-		sprite->play(anim); 
-		sprite->update(globalTime);
+		float timeForSingleFrame = (1/frameSpeed);
+
+		if(isSprite && (frameSpeed>0) )
+		{
+			frameLeft = width  * currentColumn;	
+			frameRight = width;
+
+			frameTop = height * currentRow;
+			frameBottom = height;
+
+			timer =  clock.getElapsedTime();
+			if(nextFrame)
+			{
+				frameStartTime = timer.asSeconds();
+				nextFrame = false;
+			}
+			
+			if((timer.asSeconds() - frameStartTime) >= timeForSingleFrame)
+			{
+				currentColumn++;
+				nextFrame = true;
+				
+				currentFrame++;
+			}
+
+			if(currentColumn >= columns-1 )
+			{
+				currentColumn = 0;
+				currentRow++;
+			}
+
+			if(currentRow >= rows-1)
+			{
+				currentRow = 0;
+				currentFrame = 0;
+			}
+				
+		}
+		else
+		{
+			frameLeft = 0;
+			frameRight = width;
+
+			frameTop = 0;
+			frameBottom = height;
+		}
+		sprite->setTextureRect(sf::IntRect(frameLeft, frameTop, frameRight, frameBottom));
 	}
 
 }
@@ -58,13 +104,13 @@ void Texture::PlaySprite(Animation anim)
 void Texture::PauseSprite()
 {
 	pause = true;
-	sprite->pause();
+	//sprite->pause();
 }
 
 void Texture::ResumeSprite()
 {
 	pause = false;
-	sprite->play();
+	//sprite->play();
 }
 
 // Set the frame according to given frame number
@@ -95,7 +141,7 @@ void Texture::SetTextureFrame(int frameNumber)
 	frameRight = width + (width  * currentColumn);
 
 	frameTop = height * currentRow;
-	frameBotom = height + ( height  * currentRow);
+	frameBottom = height + ( height  * currentRow);
 }
 
 bool Texture::IsPlaying()
@@ -105,5 +151,6 @@ bool Texture::IsPlaying()
 
 void Texture::SetFrameSpeed(float speed)
 {
-	frameSpeed = speed;
+	//frameSpeed = speed;
+	frameSpeed = 60;
 }	

@@ -67,6 +67,22 @@ public:
 	void OnPointerReleased(Vector2 point);
 
 	/**
+	 * This is called by the Controller class when it receives a PointerPress event.
+	 * A pointer press event is fired when either a Tap or click occurs in the game.
+	 *
+	 * @param		_Point			The point in the game world where the event took place
+	 */
+	void OnKeyPressed(sf::Keyboard::Key key);
+
+	/**
+	 * This is called by the Controller class when it receives a PointerReleased event.
+	 * A pointer released event is fired when either an UnTap or click-released occurs in the game.
+	 *
+	 * @param		_Point			The point in the game world where the event took place
+	 */
+	void OnKeyReleased(sf::Keyboard::Key key);
+
+	/**
 	 *
 	 */
 	void SetGameState(GameState newState);

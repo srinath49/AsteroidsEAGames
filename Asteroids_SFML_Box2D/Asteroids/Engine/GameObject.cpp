@@ -108,10 +108,9 @@ GameObject::GameObject(string objectName, Engine* engineRef, bool isDynamic, boo
 	name=objectName;
 
 	AddTexture(_TextureName, _IsSprite, _Rows, _Columns);
-	//m_CurrentTexture->create(TextureHolder.front()->texture->getSize().x,TextureHolder.front()->texture->getSize().y);
 	currentTexture = textureHolder.front()->texture;
-	//currentTexture->SetSize();
-	//currentTexture->SetCurrentSprite();
+	currentTexture->SetSize();
+	currentTexture->sprite->setTexture(*currentTexture->image);
 
 	
 	// Setting the game object Position
@@ -233,6 +232,7 @@ void GameObject::SetTexture(string texName)
 			}
 
 			currentTexture = tex->texture;
+			currentTexture->sprite->setTexture(*currentTexture->image);
 			// Set the texture frame to 0 
 			SetTextureFrame();
 			return;
@@ -293,7 +293,7 @@ void GameObject::Destroy()
 	GetMyLayer()->RemoveObject(name);
 }
 
-void GameObject::Render(sf::RenderWindow* renderer, sf::Time globalTime)
+void GameObject::Render(sf::RenderWindow* renderer/*, sf::Time globalTime*/)
 {  
 	if (!isActive) return; //Easy way to prevent this gameobject from being rendered
 
@@ -307,14 +307,15 @@ void GameObject::Render(sf::RenderWindow* renderer, sf::Time globalTime)
 	currentTexture->sprite->setRotation(GetRotationAngle());
 	currentTexture->sprite->setPosition(drawPositionX, drawPositionY);
 	currentTexture->sprite->setScale(xDrawScale, yDrawScale);
-	currentTexture->globalTime = globalTime;
+	//currentTexture->renderer = renderer;
+	//currentTexture->globalTime = globalTime;
 	
 	
 	// If the Texture is null then no need to draw a bitmap
 	if(currentTexture != nullptr)
 	{
 		// Set the current texture
-		currentTexture->PlaySprite(currentAnim);
+		currentTexture->PlaySprite(/*currentAnim*/);
 		// Draw Bitmap
 		renderer->draw(*currentTexture->sprite, sf::RenderStates::Default);
 	}

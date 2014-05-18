@@ -10,16 +10,8 @@ void CharacterObject::EndContact(GameObject*){}
 
 void CharacterObject::Start()
 {
-	Animation anim;
-	anim.setSpriteSheet(*currentTexture->image);
-    anim.addFrame(sf::IntRect(0, 0, 64, 64));
-    anim.addFrame(sf::IntRect(32, 0, 64, 64));
-    anim.addFrame(sf::IntRect(64, 0, 64, 64));
-    anim.addFrame(sf::IntRect(96, 0, 64, 64));
-
-	AddAnimation("anim", anim);
-	currentAnim = anim;
-	currentTexture->ResumeSprite();
+	SetGravity(0.0f);
+	SetVelocity(0.0f, 0.0f);
 	pointerPressed = false;
 }
 
@@ -45,25 +37,25 @@ void CharacterObject::OnPointerReleased(Vector2 _Point)
 
 void CharacterObject::MoveToPoint(Vector2 _MovePoint, float SpeedLimit)
 {
-	//if(RayCast(_MovePoint, L"Shed"))
-	//{
-	//	Vector2 NearestPoint[2];
-	//	GetNearestWayPoint(position, NearestPoint[0], NearestPoint[1]);
-	//	CurrentDestination = GetDistance(position, NearestPoint[0]) <= GetDistance(position, NearestPoint[1])? NearestPoint[0] : NearestPoint[1];
+	if(RayCast(_MovePoint, "Shed"))
+	{
+		Vector2 NearestPoint[2];
+		GetNearestWayPoint(position, NearestPoint[0], NearestPoint[1]);
+		CurrentDestination = GetDistance(position, NearestPoint[0]) <= GetDistance(position, NearestPoint[1])? NearestPoint[0] : NearestPoint[1];
 
-	//	if(!hasAnotherLocation)
-	//	{
-	//		hasAnotherLocation = true;
-	//		NextLocation = _MovePoint;
-	//		FinalDestination = _MovePoint;
-	//	}
-	//	else
-	//	{
-	//		//NextLocation = _MovePoint;
-	//		return;
-	//	}
-	//	return;
-	//}
+		if(!hasAnotherLocation)
+		{
+			hasAnotherLocation = true;
+			NextLocation = _MovePoint;
+			FinalDestination = _MovePoint;
+		}
+		else
+		{
+			NextLocation = _MovePoint;
+			return;
+		}
+		return;
+	}
 	
 	if(GetVelocitySize() < SpeedLimit)
 	{

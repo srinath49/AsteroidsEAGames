@@ -32,18 +32,21 @@ public:
 	float frameRight;
 	float frameLeft;
 	float frameTop;
-	float frameBotom;
+	float frameBottom;
 	float frameSpeed;
 	bool isSprite;
 
 	sf::Texture* image;
-	AnimatedSprite* sprite;
+	sf::Sprite* sprite;
 	string textureName;
 
-	sf::Time globalTime;
+	sf::Time timer;
+	sf::Clock clock;
+
+	//sf::RenderTarget* renderer;
 
 	void SetSize();
-	void PlaySprite(Animation anim);
+	void PlaySprite(/*Animation anim*/);
 	void PauseSprite();
 	void ResumeSprite();
 	bool IsPlaying();

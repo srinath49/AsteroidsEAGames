@@ -32,7 +32,20 @@ int main(int argc, char** argv)
 		sf::Event event;
         while (rWin->pollEvent(event))
         {
-            // "close requested" event: we close the window
+			switch(event.type)
+			{
+				case sf::Event::KeyPressed:
+					gameEngine->OnKeyPressed(event.key.code);
+					break;
+				
+				case sf::Event::KeyReleased:
+					gameEngine->OnKeyReleased(event.key.code);
+					break;
+
+				case sf::Event::Closed:
+				rWin->close();
+				return 0;
+			}
             if (event.type == sf::Event::Closed)
             {
 				rWin->close();
@@ -44,7 +57,7 @@ int main(int argc, char** argv)
 		rWin->clear(sf::Color::White);
 		//Render all Game Objects
 		globalTime = globalClock.getElapsedTime();
-		gameEngine->Render(globalTime);
+		gameEngine->Render(/*globalTime*/);
 		//Display to Screen
 		rWin->display();
 		float frames = globalTime.asSeconds();

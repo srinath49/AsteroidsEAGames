@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Controller.h"
+//#include "Controller.h"
 #include <string>
 #include "Box2D.h"
 #include <SFML/Graphics.hpp>
@@ -63,7 +63,7 @@ public:
 	/**
 	 * Renders all the existing GameObjects to the screen
 	 */
-	void Render(sf::Time globalTime);
+	void Render(/*sf::Time globalTime*/);
 
 	//Default Constructor
 	Engine();

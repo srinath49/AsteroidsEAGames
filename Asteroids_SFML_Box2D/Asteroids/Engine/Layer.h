@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GameObject.h"
-#include "Controller.h"
+//#include "Controller.h"
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <list>
@@ -17,7 +17,7 @@ class Layer
 		bool AddObjectToLayer(void * object);
 		void RemoveObject(string objectName);
 		GameObject * GetObjectByName(string objectName);
-		void Render(sf::RenderWindow *renderer, sf::Time globalTime);
+		void Render(sf::RenderWindow *renderer/*, sf::Time globalTime*/);
 		void Destroy();
 		void Update(unsigned long frameNumber);
 		void AddRemoveObjects();

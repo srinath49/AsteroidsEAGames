@@ -269,7 +269,7 @@ public:
 	 *
 	 * @param		m_d2dContext		A reference to the Direct2D device context, used by the engine to render the game object
 	 */
-	void Render(sf::RenderWindow* renderer, sf::Time globalTime);
+	void Render(sf::RenderWindow* renderer/*, sf::Time globalTime*/);
 
 	/**
 	 * This is a virtual function that should be implemented by the GameObject sub-classes.
@@ -277,7 +277,7 @@ public:
 	 *
 	 * @param		frameNumber		The value of the current frame
 	 */
-	virtual void Update(unsigned long frameNumber) {}
+	virtual void Update(unsigned long frameNumber){}
 
 	/**
 	 * This is a virtual function that should be implemented by the GameObject sub-classes.
@@ -845,4 +845,6 @@ public:
 	 *
 	 */
 	Animation GetCurrentAnimation(){return currentAnim;}
+
+	Texture* GetCurrentTexture(){return currentTexture;}
 };

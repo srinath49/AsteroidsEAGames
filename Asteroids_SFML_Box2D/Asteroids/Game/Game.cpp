@@ -52,40 +52,47 @@ void Game::Update(unsigned long frameNumber)
 
 void Game::OnPointerPressed(Vector2 _TouchPoint)
 {
-	/*
-	if(CurrentLevel == 0 || !levelManager || !levelManager->Levels[CurrentLevel])
+	if(!levelManager || !levelManager->Levels[currentLevel])
 	{
 		return;
 	}
-	if(CurrentLevel == 1)
-	{
-		if(((Level1*)levelManager->Levels[CurrentLevel])->batman && ((Level1*)levelManager->Levels[CurrentLevel])->batman->pointerPressed)
-		{
-			((Level1*)levelManager->Levels[CurrentLevel])->batman->pointerPressed = false;
-			return;
-		}
-		if(levelManager && levelManager->Levels[CurrentLevel] && ((Level1*)levelManager->Levels[CurrentLevel])->batman) 
-		{
-			((Level1*)levelManager->Levels[CurrentLevel])->batman->CurrentDestination = _TouchPoint;
-			((Level1*)levelManager->Levels[CurrentLevel])->batman->hasAnotherLocation = false;
-			((Level1*)levelManager->Levels[CurrentLevel])->batman->SetVelocity(0.0f,0.0f);
-			if(((Level1*)levelManager->Levels[CurrentLevel])->batman->GetState() != Player::PlayerState::WalkingState)
-			{
-				((Level1*)levelManager->Levels[CurrentLevel])->batman->SetState(Player::PlayerState::WalkingState);
-			}
-		}
-	}
-	*/
+	levelManager->Levels[currentLevel]->OnPointerPressed(_TouchPoint);
 }
 
 void Game::OnPointerMoved(Vector2 _TouchPoint)
 {
-
+	if(!levelManager || !levelManager->Levels[currentLevel])
+	{
+		return;
+	}
+	levelManager->Levels[currentLevel]->OnPointerMoved(_TouchPoint);
 }
 
 void Game::OnPointerReleased(Vector2 _TouchPoint)
 {
-	
+	if(!levelManager || !levelManager->Levels[currentLevel])
+	{
+		return;
+	}
+	levelManager->Levels[currentLevel]->OnPointerReleased(_TouchPoint);
+}
+
+void Game::OnKeyPressed(sf::Keyboard::Key key)
+{
+	if(!levelManager || !levelManager->Levels[currentLevel])
+	{
+		return;
+	}
+	levelManager->Levels[currentLevel]->OnKeyPressed(key);
+}
+
+void Game::OnKeyReleased(sf::Keyboard::Key key)
+{
+	if(!levelManager || !levelManager->Levels[currentLevel])
+	{
+		return;
+	}
+	levelManager->Levels[currentLevel]->OnKeyReleased(key);
 }
 
 void Game::LoadLevel(int level)

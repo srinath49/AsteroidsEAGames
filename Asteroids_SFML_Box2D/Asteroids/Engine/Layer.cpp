@@ -49,15 +49,16 @@ void Layer::Update(unsigned long frameNumber)
 	for(it_type iterator = m_objectByRef.begin(); iterator != m_objectByRef.end(); iterator++) 
 	{
 		iterator->second->Update(frameNumber);
+		//iterator->second->SetTextureFrame(frameNumber);
 	}
 }
 
-void Layer::Render(sf::RenderWindow* renderer, sf::Time globalTime)
+void Layer::Render(sf::RenderWindow* renderer/*, sf::Time globalTime*/)
 {
 	typedef std::map<string, GameObject *>::iterator it_type;
 	for(it_type iterator = m_objectByRef.begin(); iterator != m_objectByRef.end(); iterator++) 
 	{
-		iterator->second->Render(renderer, globalTime);
+		iterator->second->Render(renderer/*, globalTime*/);
 	}
 }
 
