@@ -8,7 +8,7 @@ class Level1 : public Level
 {
 public:
 	Level1(void) : Level(){levelDone = false;}
-	Level1(Game* gameLoop, int levelNumber) : Level (gameLoop, levelNumber){levelDone = false;}
+	Level1(Game* gameEngine, int levelNumber) : Level (gameEngine, levelNumber){levelDone = false;}
 
 	void CreateLayers();
 	void CreateGameObjects();
@@ -64,4 +64,5 @@ private:
 	int BackgroundLayer;
 
 	CharacterObject* Bgrd;
+	CharacterObject* Bgrd2;
 };

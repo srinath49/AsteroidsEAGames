@@ -130,5 +130,8 @@
     <None Include="Assets\ScreenBackground.png">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Assets\spaceShip.png">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

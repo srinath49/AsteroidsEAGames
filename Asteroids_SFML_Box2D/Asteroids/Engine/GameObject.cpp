@@ -111,6 +111,8 @@ GameObject::GameObject(string objectName, Engine* engineRef, bool isDynamic, boo
 	currentTexture = textureHolder.front()->texture;
 	currentTexture->SetSize();
 	currentTexture->sprite->setTexture(*currentTexture->image);
+	currentTexture->ResumeSprite();
+	currentTexture->owner = this;
 
 	
 	// Setting the game object Position

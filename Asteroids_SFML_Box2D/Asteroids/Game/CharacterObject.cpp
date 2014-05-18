@@ -24,7 +24,7 @@ string CharacterObject::GetType()
 
 void CharacterObject::OnPointerPressed(Vector2 _Point)
 {
-	int i = 0;
+	printf("Clicked Object");
 }
 
 void CharacterObject::OnPointerMoved(Vector2 _Point)

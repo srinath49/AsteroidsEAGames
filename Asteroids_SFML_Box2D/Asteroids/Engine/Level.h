@@ -25,7 +25,7 @@ class Level
 public:
 
 	Level(){}
-	Level(Game* gameLoop, int levelNumber);
+	Level(Game* gameEngine, int levelNumber);
 
 	virtual void CreateLayers(){}
 	virtual void CreateGameObjects(){}
@@ -84,7 +84,7 @@ public:
 	virtual void OnKeyReleased(sf::Keyboard::Key key){}
 
 	int levelNumber;
-	Game* gameLoop;
+	Game* gameEngine;
 
 	sf::Time timer;
 	sf::Clock clock;

@@ -1,11 +1,11 @@
 
 #include "Level.h"
 
-Level::Level(Game* gameLoop, int levelNumber)
+Level::Level(Game* gameEngine, int levelNumber)
 {
 	layersAdded = false;
 	this->levelNumber = levelNumber;
-	this->gameLoop = gameLoop;
+	this->gameEngine = gameEngine;
 	SetLevelState(LevelLoading);
 }
 
@@ -24,7 +24,7 @@ void Level::ReleaseAllResources()
 
 void Level::AddObjectToLayer(GameObject* gObj, int layer)
 {
-	gameLoop->GetLayer(layer)->AddObjectToLayer(gObj);
+	gameEngine->GetLayer(layer)->AddObjectToLayer(gObj);
 }
 
 void Level::SetLevelTimer()
@@ -46,11 +46,11 @@ LevelState Level::GetLevelState()
 void Level::DeleteAllGameObjects()
 {
 	/*
-	for(int i = 0; i < gameLoop->GetLayerCount(); i++)
+	for(int i = 0; i < gameEngine->GetLayerCount(); i++)
 	{
-		if(gameLoop->LayerExists(i))
+		if(gameEngine->LayerExists(i))
 		{
-			gameLoop->DeleteLayer(i);
+			gameEngine->DeleteLayer(i);
 		}
 	}
 	*/

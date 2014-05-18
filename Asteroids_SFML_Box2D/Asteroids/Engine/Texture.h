@@ -7,6 +7,8 @@
 
 using namespace std;
 
+class GameObject;
+
 class Texture
 {
 private:
@@ -35,6 +37,8 @@ public:
 	float frameBottom;
 	float frameSpeed;
 	bool isSprite;
+	
+	GameObject* owner;
 
 	sf::Texture* image;
 	sf::Sprite* sprite;

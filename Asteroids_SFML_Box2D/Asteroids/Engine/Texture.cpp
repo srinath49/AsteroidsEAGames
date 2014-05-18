@@ -75,13 +75,13 @@ void Texture::PlaySprite(/*Animation anim*/)
 				currentFrame++;
 			}
 
-			if(currentColumn >= columns-1 )
+			if(currentColumn >= columns )
 			{
 				currentColumn = 0;
 				currentRow++;
 			}
 
-			if(currentRow >= rows-1)
+			if(currentRow >= rows)
 			{
 				currentRow = 0;
 				currentFrame = 0;
