@@ -3,6 +3,7 @@
 #include "Engine/Level.h"
 #include "Engine/GameObject.h"
 #include "Player.h"
+#include "BigRock.h"
 
 class Level1 : public Level
 {
@@ -68,10 +69,11 @@ private:
 
 	Player* player;
 
-	GameObject* bigRock1;
+	BigRock* bigRock1;
+	/*
 	GameObject* bigRock2;
 	GameObject* bigRock3;
-
+	
 	GameObject* mediumRock1;
 	GameObject* mediumRock2;
 	GameObject* mediumRock3;
@@ -97,5 +99,5 @@ private:
 	GameObject* smallRock16;
 	GameObject* smallRock17;
 	GameObject* smallRock18;
-	
+	*/
 };

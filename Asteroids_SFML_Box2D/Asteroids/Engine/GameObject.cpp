@@ -133,8 +133,8 @@ GameObject::GameObject(string objectName, Engine* engineRef, bool isDynamic, boo
 	b2Body* body;
 	body = phyxWorld->CreateBody(&BodyDef);
 	body->SetUserData((void*)this);
-	Box.SetAsBox((currentTexture->image->getSize().x*0.5f)/50,( currentTexture->image->getSize().y*0.5f)/50);
-	Box.SetAsBox((5.0f)/50,(5.0f)/50);
+	Box.SetAsBox((currentTexture->image->getSize().x/100),( currentTexture->image->getSize().y/100));
+	//Box.SetAsBox((5.0f)/50,(5.0f)/50);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &Box;

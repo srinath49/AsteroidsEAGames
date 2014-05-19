@@ -6,7 +6,19 @@ class Enemy;
 
 class Player : public CharacterObject
 {
-	public:
+public:
+	enum MoveDirection
+	{
+		Up,
+		Down,
+	};
+
+	enum RotationAngle
+	{
+		Right,
+		Left
+	};
+
 	enum  PlayerState
 	{
 		MovingState,
@@ -20,11 +32,15 @@ class Player : public CharacterObject
 	void OnPointerPressed(Vector2 _Point);
 	void OnPointerReleased(Vector2 _Point);
 	void OnPointerMoved(Vector2 _Point);
+	void OnKeyPressed(sf::Keyboard::Key pressedKey);
+	void OnKeyReleased(sf::Keyboard::Key releasedKey);
+
 	void SetState(PlayerState);
 	PlayerState GetState(){return currentState;}
-	void SetStateTextureWithOrientation();
-
-	void EnemyEscaped(){EnemiesEscaped++;}
+	
+	void MovePlayer(MoveDirection direction);
+	void RotatePlayer(RotationAngle angle);
+	
 	void AddScore(int _ScoreToAdd){Score+=_ScoreToAdd;}
 
 	string IntString(int intToConvert);

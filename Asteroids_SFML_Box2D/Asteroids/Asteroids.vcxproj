@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\AsteroidRock.cpp" />
     <ClCompile Include="Game\BigRock.cpp" />
     <ClCompile Include="Engine\AnimatedSprite.cpp" />
     <ClCompile Include="Engine\Animation.cpp" />
@@ -100,8 +101,11 @@
     <ClCompile Include="EngineStart.cpp" />
     <ClCompile Include="Engine\MyQueryCallback.cpp" />
     <ClCompile Include="Game\MenuScreenLevel.cpp" />
+    <ClCompile Include="Game\MediumRock.cpp" />
+    <ClCompile Include="Game\SmallRock.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\AsteroidRock.h" />
     <ClInclude Include="Game\BigRock.h" />
     <ClInclude Include="Engine\AnimatedSprite.hpp" />
     <ClInclude Include="Engine\Animation.h" />
@@ -122,6 +126,8 @@
     <ClInclude Include="Game\Game.h" />
     <ClInclude Include="Engine\MyQueryCallback.h" />
     <ClInclude Include="Game\MenuScreenLevel.h" />
+    <ClInclude Include="Game\MediumRock.h" />
+    <ClInclude Include="Game\SmallRock.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\ScreenBackground.png" />

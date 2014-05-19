@@ -1,6 +1,9 @@
 
 #include "Level1.h"
 
+BigRock* bigRock2;
+BigRock* bigRock3;
+
 void Level1::CreateLayers()
 {
 	backgroundLayer = gameEngine->AddLayer();
@@ -14,10 +17,16 @@ void Level1::CreateGameObjects()
 	player = new Player("Character", gameEngine, true, true, Vector2(-5.0f , 0.0f), "spaceShip.png", true, 2, 2);
 	player->SetTag("PlayerShip");
 
-	rock = new GameObject("Character2", gameEngine, true, true, Vector2(5.0f , 0.0f), "battle_ship.png", true, 2, 10);
-	rock->SetGravity(0.0f);
-	rock->SetVelocity(0.0f,0.0f);
-	rock->SetTag("Rock");
+	bigRock1 = new BigRock("Character2", gameEngine, true, true, Vector2(5.0f , 0.0f), "battle_ship.png", true, 2, 10);
+	//bigRock1->SetGravity(0.0f);
+	//bigRock1->SetVelocity(0.0f,0.0f);
+	bigRock1->SetTag("Rock");
+	
+	bigRock2 = new BigRock("Character3", gameEngine, true, true, Vector2(3.0f , 3.0f), "battle_ship.png", true, 2, 10);
+	bigRock2->SetTag("Rock");
+
+	bigRock3 = new BigRock("Character4", gameEngine, true, true, Vector2(5.0f , -5.0f), "battle_ship.png", true, 2, 10);
+	bigRock3->SetTag("Rock");
 }
 
 void Level1::AddObjectsToLayers()
@@ -25,9 +34,9 @@ void Level1::AddObjectsToLayers()
 	
 	//Adding Objects to Layers
 	gameEngine->GetLayer(playerLayer)->AddObjectToLayer(player);
-	gameEngine->GetLayer(rocksLayer)->AddObjectToLayer(rock);
-	gameEngine->GetLayer(rocksLayer)->AddObjectToLayer(new GameObject("Character3", gameEngine, true, true, Vector2(3.0f , 3.0f), "battle_ship.png", true, 2, 10));
-	gameEngine->GetLayer(rocksLayer)->AddObjectToLayer(new GameObject("Character4", gameEngine, true, true, Vector2(5.0f , -5.0f), "battle_ship.png", true, 2, 10));
+	gameEngine->GetLayer(rocksLayer)->AddObjectToLayer(bigRock1);
+	gameEngine->GetLayer(rocksLayer)->AddObjectToLayer(bigRock2);
+	gameEngine->GetLayer(rocksLayer)->AddObjectToLayer(bigRock3);
 	levelDone = false;
 	
 }
@@ -86,37 +95,14 @@ void Level1::OnKeyPressed(sf::Keyboard::Key key)
 	{
 		return;
 	}
-	Vector2 tempPos;
-	switch(key)
-	{
-		case sf::Keyboard::Right:
-			player->AddForce(1.0f, 0.0f, Coordinate::Global);
-			//printf("Right Pressed\n");
-			break;
-		case sf::Keyboard::Left:
-			player->AddForce(-1.0f, 0.0f, Coordinate::Global);
-			//printf("Left Pressed\n");
-			break;
-		case sf::Keyboard::Up:
-			player->AddForce(0.0f, 1.0f, Coordinate::Global);
-			//printf("Up Pressed\n");
-			break;
-		case sf::Keyboard::Down:
-			player->AddForce(0.0f, -1.0f, Coordinate::Global);
-			//printf("Down Pressed\n");
-			break;
-		case sf::Keyboard::A:
-			player->Rotate(0.05f);
-			//printf("Down Pressed\n");
-			break;
-		case sf::Keyboard::S:
-			player->Rotate(-0.05f);
-			//printf("Down Pressed\n");
-			break;
-	}
+	player->OnKeyPressed(key);
 }
 
 void Level1::OnKeyReleased(sf::Keyboard::Key key)
 {
-
+	if(player == nullptr)
+	{
+		return;
+	}
+	player->OnKeyReleased(key);
 }

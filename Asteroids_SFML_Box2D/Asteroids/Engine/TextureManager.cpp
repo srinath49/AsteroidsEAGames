@@ -19,8 +19,8 @@ TextureEntry * TextureManager::AddTexture(Engine * engineRef, string textureName
 	TextureEntry * texEnt = new TextureEntry();
 
 	// Set texture bitmap
-	if (tex == NULL)
-	{	
+	/*if (tex == NULL)
+	{*/	
 		TextureEntry * texEnt2 = new TextureEntry();
 		Texture* tempTexture2 = new Texture();
 		tempTexture2->image->loadFromFile(fileName);
@@ -35,7 +35,7 @@ TextureEntry * TextureManager::AddTexture(Engine * engineRef, string textureName
 		texEnt2->texture = tempTexture2;
 		texEnt2->textureName = textureName;
 		TextureManager::textureStore[textureName] = texEnt2;
-	}
+	/*}
 	else
 	{
 		tempTexture=tex->texture;
@@ -46,7 +46,7 @@ TextureEntry * TextureManager::AddTexture(Engine * engineRef, string textureName
 		tempTexture->frameSpeed = 10.0f;
 		texEnt->texture = tempTexture;
 		texEnt->textureName = textureName;
-	}
+	}*/
 
 	return texEnt;
 
