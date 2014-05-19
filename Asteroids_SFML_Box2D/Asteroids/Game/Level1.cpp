@@ -14,19 +14,25 @@ void Level1::CreateLayers()
 
 void Level1::CreateGameObjects()
 {
-	player = new Player("Character", gameEngine, true, true, Vector2(-5.0f , 0.0f), "spaceShip.png", true, 2, 2);
-	player->SetTag("PlayerShip");
 
-	bigRock1 = new BigRock("Character2", gameEngine, true, true, Vector2(5.0f , 0.0f), "battle_ship.png", true, 2, 10);
+	float widthScreen = gameEngine->GetRenderer()->getSize().x;
+	float heightScreen = gameEngine->GetRenderer()->getSize().y;
+
+	//player = new Player("Character", gameEngine, true, true, Vector2(widthScreen*0.5f ,heightScreen *0.5f), "spaceShip2.png", true, 2, 2);
+	player = new Player("Character", gameEngine, true, true, Vector2(0.0f, 0.0f), "spaceShip2.png", true, 2, 2);
+	player->SetTag("PlayerShip");
+	player->currentLevel = this;
+
+	bigRock1 = new BigRock("Character2", gameEngine, true, true, Vector2(4.0f , 1.0f), "Big_rock_01.png", false, 1, 1);
 	//bigRock1->SetGravity(0.0f);
 	//bigRock1->SetVelocity(0.0f,0.0f);
-	bigRock1->SetTag("Rock");
+	//bigRock1->SetTag("Rock");
 	
-	bigRock2 = new BigRock("Character3", gameEngine, true, true, Vector2(3.0f , 3.0f), "battle_ship.png", true, 2, 10);
-	bigRock2->SetTag("Rock");
+	//bigRock2 = new BigRock("Character3", gameEngine, true, true, Vector2(-3.0f , 3.0f), "battle_ship.png", true, 2, 10);
+	//bigRock2->SetTag("Rock");
 
-	bigRock3 = new BigRock("Character4", gameEngine, true, true, Vector2(5.0f , -5.0f), "battle_ship.png", true, 2, 10);
-	bigRock3->SetTag("Rock");
+	//bigRock3 = new BigRock("Character4", gameEngine, true, true, Vector2(5.0f , -5.0f), "battle_ship.png", true, 2, 10);
+	//bigRock3->SetTag("Rock");
 }
 
 void Level1::AddObjectsToLayers()
@@ -35,8 +41,8 @@ void Level1::AddObjectsToLayers()
 	//Adding Objects to Layers
 	gameEngine->GetLayer(playerLayer)->AddObjectToLayer(player);
 	gameEngine->GetLayer(rocksLayer)->AddObjectToLayer(bigRock1);
-	gameEngine->GetLayer(rocksLayer)->AddObjectToLayer(bigRock2);
-	gameEngine->GetLayer(rocksLayer)->AddObjectToLayer(bigRock3);
+	//gameEngine->GetLayer(rocksLayer)->AddObjectToLayer(bigRock2);
+	//gameEngine->GetLayer(rocksLayer)->AddObjectToLayer(bigRock3);
 	levelDone = false;
 	
 }
@@ -105,4 +111,9 @@ void Level1::OnKeyReleased(sf::Keyboard::Key key)
 		return;
 	}
 	player->OnKeyReleased(key);
+}
+
+void Level1::PlayerNull()
+{
+	player = nullptr;
 }

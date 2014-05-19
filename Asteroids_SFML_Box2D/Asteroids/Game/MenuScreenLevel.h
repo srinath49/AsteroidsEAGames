@@ -1,6 +1,5 @@
 #pragma once
 #include "Engine/Level.h"
-#include "CharacterObject.h"
 #include "Background.h"
 
 class MenuScreenLevel :

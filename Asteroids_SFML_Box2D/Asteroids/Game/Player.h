@@ -1,10 +1,10 @@
 #pragma once
+
 #include "Engine\GameObject.h"
-#include "Game\CharacterObject.h"
+#include "GameLevel.h"
 
-class Enemy;
 
-class Player : public CharacterObject
+class Player : public GameObject
 {
 public:
 	enum MoveDirection
@@ -26,8 +26,11 @@ public:
 		DeadState
 	};
 
-	Player() : CharacterObject(){}
-	Player(string objectName, Engine* _Main, bool dynamic, bool physicsBody, Vector2 &_Position, string _TextureName, bool _IsSprite, int _Rows, int _Columns) : CharacterObject(objectName, _Main, dynamic, physicsBody, _Position, _TextureName, _IsSprite, _Rows, _Columns) {}
+	int Score;
+	GameLevel* currentLevel;
+
+	Player() : GameObject(){}
+	Player(string objectName, Engine* gameEngine, bool dynamic, bool physicsBody, Vector2 &_Position, string _TextureName, bool _IsSprite, int _Rows, int _Columns) : GameObject(objectName, gameEngine, dynamic, physicsBody, _Position, _TextureName, _IsSprite, _Rows, _Columns) {this->gameEngine = gameEngine;}
 
 	void OnPointerPressed(Vector2 _Point);
 	void OnPointerReleased(Vector2 _Point);
@@ -43,11 +46,9 @@ public:
 	
 	void AddScore(int _ScoreToAdd){Score+=_ScoreToAdd;}
 
-	string IntString(int intToConvert);
+	void Fire();
 
-	GameObject* CurrentTarget;
-	int EnemiesEscaped;
-	int Score;
+	//string IntString(int intToConvert);
 
 private:
 
@@ -55,7 +56,7 @@ private:
 	void EndContact(GameObject* object);
 	void Start();
 	void Update(unsigned long frameNumber);
-
+	void OnDestroy();
 	string GetType();
 
 	PlayerState currentState;
@@ -71,5 +72,7 @@ private:
 	GameObject* EscapedImage;
 
 	int clickcount;
+
+	Engine* gameEngine;
 };
 

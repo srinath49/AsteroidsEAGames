@@ -3,6 +3,7 @@
 TextureEntry * TextureManager::AddTexture(Engine * engineRef, string textureName, bool isSprite, int rows, int columns)
 {	
 	string fileName = "Assets/";
+
 	fileName += textureName;
 	TextureEntry * tex = TextureManager::textureStore[textureName];
 

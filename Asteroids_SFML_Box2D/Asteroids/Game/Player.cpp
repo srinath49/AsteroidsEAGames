@@ -1,13 +1,12 @@
 #include "Player.h"
+#include "Bullet.h"
 
-
-void Player::BeginContact(GameObject* _Object)
+void Player::BeginContact(GameObject* object)
 {
-	if(_Object->CompareTag("Rock"))
+	if(object->CompareTag("Rock"))
 	{
 		SetState(DyingState);
-	}
-	
+	}	
 }
 
 void Player::EndContact(GameObject*)
@@ -16,21 +15,23 @@ void Player::EndContact(GameObject*)
 
 void Player::Start()
 {
-	
+	IsTrigger(true);
 	SetGravity(0.0f);
 	SetVelocity(0.0f,0.0f);
+	SetFriction(0.1f);
+	SetDamping(0.4f);
+	SetAngularDamping(0.8f);
 }
 
 void Player::Update(unsigned long frameNumber)
 {
-	
 	switch(currentState)
 	{
 		case DyingState:
 			Destroy();
+			currentLevel->PlayerNull();
 			break;
 	}
-	
 }
 
 string Player::GetType()
@@ -58,79 +59,111 @@ void Player::SetState(PlayerState _NewState)
 }
 
 
-
+/*
 string Player::IntString(int intToConvert)
 {
 	//string ret; 
 	//_itow_s(intToConvert, ret, 10);
 	return "";
 }
-
+*/
 
 void Player::OnKeyPressed(sf::Keyboard::Key pressedKey)
 {
+	if(currentState == DyingState)
+	{
+		return;
+	}
+
 	switch(pressedKey)
 	{
 		case sf::Keyboard::Up:
 			MovePlayer(MoveDirection::Up);
-			//player->AddForce(0.0f, 1.0f, Coordinate::Global);
-			//printf("Up Pressed\n");
 			break;
 		case sf::Keyboard::Down:
 			MovePlayer(MoveDirection::Down);
-			//player->AddForce(0.0f, -1.0f, Coordinate::Global);
-			//printf("Down Pressed\n");
 			break;
 		case sf::Keyboard::Right:
 			RotatePlayer(RotationAngle::Right);
-			//AddForce(1.0f, 0.0f, Coordinate::Global);
-			//printf("Right Pressed\n");
 			break;
 		case sf::Keyboard::Left:
 			RotatePlayer(RotationAngle::Left);
-			//player->AddForce(-1.0f, 0.0f, Coordinate::Global);
-			//printf("Left Pressed\n");
+			break;
+		case sf::Keyboard::Space:
+			Fire();
 			break;
 	}
 }
 
 void Player::OnKeyReleased(sf::Keyboard::Key releasedKey)
 {
+	if(currentState == DyingState)
+	{
+		return;
+	}
+
 	switch(releasedKey)
 	{
 		case sf::Keyboard::Right:
-			//player->AddForce(1.0f, 0.0f, Coordinate::Global);
-			//printf("Right Pressed\n");
 			break;
 		case sf::Keyboard::Left:
-			//player->AddForce(-1.0f, 0.0f, Coordinate::Global);
-			//printf("Left Pressed\n");
 			break;
 		case sf::Keyboard::Up:
-			//player->AddForce(0.0f, 1.0f, Coordinate::Global);
-			//printf("Up Pressed\n");
 			break;
 		case sf::Keyboard::Down:
-			//player->AddForce(0.0f, -1.0f, Coordinate::Global);
-			//printf("Down Pressed\n");
-			break;
-		case sf::Keyboard::A:
-			//player->collisionBox->SetAngularVelocity(0.05f);
-			//printf("Down Pressed\n");
-			break;
-		case sf::Keyboard::S:
-			//player->collisionBox->SetAngularVelocity(-0.05f);
-			//printf("Down Pressed\n");
 			break;
 	}
 }
 
 void Player::MovePlayer(MoveDirection direction)
 {
-	//if()
+	if(currentState == DyingState)
+	{
+		return;
+	}
+
+	if(GetVelocitySize() >= 5.0)
+	{
+		return;
+	}
+	switch(direction)
+	{
+		case Up: AddForce(0.0f, 3.75f, Coordinate::Local);
+			break;
+		case Down: AddForce(0.0f, -3.75f, Coordinate::Local);
+			break;
+	}
 }
 
 void Player::RotatePlayer(RotationAngle angle)
 {
+	if(currentState == DyingState)
+	{
+		return;
+	}
 
+	if(collisionBox->GetAngularVelocity() >= 3.0)
+	{
+		return;
+	}
+	switch(angle)
+	{
+		case Right: collisionBox->SetAngularVelocity(collisionBox->GetAngularVelocity()+0.05f);
+			break;
+		case Left: collisionBox->SetAngularVelocity(collisionBox->GetAngularVelocity()-0.05f);
+			break;
+	}
+}
+
+
+void Player::Fire()
+{
+	if(currentState == DyingState)
+	{
+		return;
+	}
+
+	Bullet* newBullet = new Bullet("Bullet", gameEngine, true, true, position, "bullet.png", false, 1, 1);
+ 	newBullet->SetRotation(this->GetRotationAngle());
+	gameEngine->GetLayer(1)->AddObjectToLayer(newBullet);
 }

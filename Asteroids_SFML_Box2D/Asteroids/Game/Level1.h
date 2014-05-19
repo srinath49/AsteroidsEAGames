@@ -1,15 +1,15 @@
 #pragma once
 
-#include "Engine/Level.h"
+#include "GameLevel.h"
 #include "Engine/GameObject.h"
 #include "Player.h"
 #include "BigRock.h"
 
-class Level1 : public Level
+class Level1 : public GameLevel
 {
 public:
-	Level1(void) : Level(){levelDone = false;}
-	Level1(Game* gameEngine, int levelNumber) : Level (gameEngine, levelNumber){levelDone = false;}
+	Level1(void) : GameLevel(){levelDone = false;}
+	Level1(Game* gameEngine, int levelNumber) : GameLevel (gameEngine, levelNumber){levelDone = false;}
 
 	void CreateLayers();
 	void CreateGameObjects();
@@ -18,6 +18,7 @@ public:
 	void LevelLost();
 	void Update(unsigned long frameNumber);
 
+	void PlayerNull();
 	/**
 	 * This is called by the Controller class when it receives a PointerPress event.
 	 * A pointer press event is fired when either a Tap or click occurs in the game.

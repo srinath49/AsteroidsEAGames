@@ -51,6 +51,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>./;./Frameworks;./Frameworks/SFML/include;./Frameworks/Box2D;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -69,6 +70,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>./;./Frameworks;./Frameworks/SFML/include;./Frameworks/Box2D;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -80,6 +82,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game\GameLevel.cpp" />
+    <ClCompile Include="Game\Bullet.cpp" />
     <ClCompile Include="Game\AsteroidRock.cpp" />
     <ClCompile Include="Game\BigRock.cpp" />
     <ClCompile Include="Engine\AnimatedSprite.cpp" />
@@ -93,8 +97,6 @@
     <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\TextureManager.cpp" />
     <ClCompile Include="Game\Background.cpp" />
-    <ClCompile Include="Game\CharacterObject.cpp" />
-    <ClCompile Include="Game\Environment.cpp" />
     <ClCompile Include="Game\Level1.cpp" />
     <ClCompile Include="Game\Player.cpp" />
     <ClCompile Include="Game\Game.cpp" />
@@ -105,6 +107,8 @@
     <ClCompile Include="Game\SmallRock.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game\GameLevel.h" />
+    <ClInclude Include="Game\Bullet.h" />
     <ClInclude Include="Game\AsteroidRock.h" />
     <ClInclude Include="Game\BigRock.h" />
     <ClInclude Include="Engine\AnimatedSprite.hpp" />
@@ -119,8 +123,6 @@
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\TextureManager.h" />
     <ClInclude Include="Game\Background.h" />
-    <ClInclude Include="Game\CharacterObject.h" />
-    <ClInclude Include="Game\Environment.h" />
     <ClInclude Include="Game\Level1.h" />
     <ClInclude Include="Game\Player.h" />
     <ClInclude Include="Game\Game.h" />

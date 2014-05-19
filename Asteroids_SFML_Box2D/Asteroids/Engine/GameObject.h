@@ -833,6 +833,11 @@ public:
 	void SetDamping(float damping);
 
 	/**
+	 * Applies a damping value to the  velocity of the object
+	 */
+	void SetAngularDamping(float damping);
+
+	/**
 	 *
 	 */
 	void AddAnimation(string animName, Animation anim);

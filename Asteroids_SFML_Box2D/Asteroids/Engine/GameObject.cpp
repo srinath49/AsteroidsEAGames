@@ -4,7 +4,6 @@
 extern b2World* phyxWorld; 
 float meterToPixel = 50.0; //50 pixels to a meter
 
-
 GameObject::GameObject() : 
 	isActive(true),
 	objectId(0),
@@ -133,13 +132,14 @@ GameObject::GameObject(string objectName, Engine* engineRef, bool isDynamic, boo
 	b2Body* body;
 	body = phyxWorld->CreateBody(&BodyDef);
 	body->SetUserData((void*)this);
-	Box.SetAsBox((currentTexture->image->getSize().x/100),( currentTexture->image->getSize().y/100));
+	//Box.SetAsBox((currentTexture->image->getSize().x/100.0f),(currentTexture->image->getSize().y/100.0f)/*, b2Vec2((currentTexture->image->getSize().x*0.5f),(currentTexture->image->getSize().y*0.5f)),  body->GetAngle()*/);
+	Box.SetAsBox(((currentTexture->image->getSize().x*0.5f)/meterToPixel),((currentTexture->image->getSize().y*0.5f)/meterToPixel), b2Vec2((currentTexture->image->getSize().x*0.5f)/meterToPixel,(currentTexture->image->getSize().y*0.5f)/meterToPixel),  body->GetAngle());
 	//Box.SetAsBox((5.0f)/50,(5.0f)/50);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &Box;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.8f;
+	//fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.5f;
 	colliderType = ColliderType::BoxCollider;
 
 	body->CreateFixture(&fixtureDef);
@@ -286,6 +286,7 @@ void GameObject::OnDestroy()
 {
 	 textureHolder.remove_if(deleteAll);
 	 collisionBox->GetWorld()->DestroyBody(collisionBox);
+	 //delete(this);
 }
 
 void GameObject::Destroy()
@@ -308,6 +309,7 @@ void GameObject::Render(sf::RenderWindow* renderer/*, sf::Time globalTime*/)
 
 	currentTexture->sprite->setRotation(GetRotationAngle());
 	currentTexture->sprite->setPosition(drawPositionX, drawPositionY);
+	//currentTexture->sprite->setPosition(position.x, position.y);
 	currentTexture->sprite->setScale(xDrawScale, yDrawScale);
 	//currentTexture->renderer = renderer;
 	//currentTexture->globalTime = globalTime;
@@ -397,6 +399,13 @@ void GameObject::AddForce(Vector2 direction, Coordinate rotCoords)
 	if(rotCoords == Local)
 	{
 		b2Vec2 forward =collisionBox->GetWorldVector(b2Vec2(direction.x,direction.y));
+		if(forward.y>0.0f || forward.y <0.0f)
+		{
+			if(forward.x>0.25f || forward.x <-0.25f)
+			{
+				forward.x = -forward.x;
+			}
+		}
 		collisionBox->ApplyForceToCenter(forward, true);
 	}
 	else if(rotCoords == Global)
@@ -529,6 +538,7 @@ void GameObject::SetRotation(float angle)
 {
 	collisionBox->SetTransform( collisionBox->GetPosition(), angle / 57.2957795f); // Convert Angle From Radians to Degrees 
 }
+
 
 // Translate the game object to a given point(X,Y) in local or global coordinate 
 void GameObject::Translate(float x,float y, Coordinate rotCoords)
@@ -725,6 +735,13 @@ void GameObject::SetDensity(float density)
 void GameObject::SetDamping(float damp)
 {
 	collisionBox->SetLinearDamping(damp);
+}
+
+// Set the damping of the object
+// Damping is used to reduce the world velocity of gameobject
+void GameObject::SetAngularDamping(float damp)
+{
+	collisionBox->SetAngularDamping(damp);
 }
 
 // Set the Sphere collision's to GameObject
