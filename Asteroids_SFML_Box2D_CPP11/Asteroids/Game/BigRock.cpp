@@ -29,7 +29,7 @@ void BigRock::Start()
 	SetVelocity(xVel, yVel);
 	//this->collisionBox->ApplyTorque(RandFloatInRange(0.5f, 1.5f), true);
 	SetState(NormalState);
-	IsTrigger(true);
+	//SetTrigger(true);
 	collisionBox->ApplyTorque(1.0f, true);
 }
 

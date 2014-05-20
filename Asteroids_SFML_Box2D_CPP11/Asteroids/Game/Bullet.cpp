@@ -25,7 +25,7 @@ void Bullet::Start()
 	SetVelocity(0.0f,0.0f);
 	SetFriction(0.001f);
 	destroy = false;
-	IsTrigger(true);
+	SetTrigger(true);
 	SetTag("Bullet");
 
 	lifeClock.restart();

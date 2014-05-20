@@ -2,85 +2,16 @@
 #include "Layer.h"
 
 
-extern b2World* phyxWorld; 
-
 GameObject::GameObject() : 
 	isActive(true),
-	objectId(0),
+	/*objectId(0),*/
 	rotateTextureWithPhysics(true),
-	isDestroyed(false),
-	pointerPressed(false)
+	isDestroyed(false)
 {
 	name = "Object";
 	meterToPixel = 50.0f;
 }
 
-
-// Empty GameObject. An Empty Gameobject is a minimum GameObject. It has no Texture, and has a minimum collision scale 
-GameObject::GameObject(string objectName, Engine* engineRef, bool isDynamic, bool isPhysicsBody, Vector2 &position)
-:	isActive(true),
-	objectId(0),
-	rotateTextureWithPhysics(true),
-	isDestroyed(false),
-	pointerPressed(false)
-{
-	meterToPixel = 50.0f;
-	// setting the gameobject name 
-	name = objectName;
-
-	xDrawScale=1;
-	yDrawScale=1;
-	xCollisionScale=1;
-	yCollisionScale=1;
-
-	// set the current texture to null
-	currentTexture = NULL;
-	
-	// Ref to main Class 
-	engineRef = engineRef;
-	
-	// Setting the game object Position
-	position = position;
-
-	xCollisionScale=1;
-	yCollisionScale=1; 
-	xDrawScale=1;
-	yDrawScale=1;
-
-	dynamic = isDynamic;
-	isPhyxBody = isPhysicsBody;
-	b2BodyDef BodyDef;
-	b2PolygonShape Box;			
-	BodyDef.position.Set(position.x, position.y);	
-
-	if(dynamic)
-	{
-		BodyDef.type = b2_dynamicBody;
-	}
-
-	b2Body* body;
-	body = phyxWorld->CreateBody(&BodyDef);
-	body->SetUserData((void*)this);
-	Box.SetAsBox(1,1);
-
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &Box;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.8f;
-	colliderType = ColliderType::BoxCollider;
-
-	body->CreateFixture(&fixtureDef);
-	collisionBox = body;
-
-	if(!isPhyxBody)
-	{
-		collisionBox->SetActive(false);
-	}
-
-	// Setting the original Height and widht
-	originalWidth = 1;
-	originalHeight = 1;
-}
 
 // Seting the Velocity of the gameobject
 void GameObject::SetVelocity(float x,float y)
@@ -91,14 +22,13 @@ void GameObject::SetVelocity(float x,float y)
 // Full GameObject with texture
 GameObject::GameObject(string objectName, Engine* engineRef, bool isDynamic, bool isPhysicsBody, Vector2 &_Position, string _TextureName, bool _IsSprite, int _Rows, int _Columns)
 :	isActive(true),
-	objectId(0),
+	/*objectId(0),*/
 	rotateTextureWithPhysics(true),
-	isDestroyed(false),
-	pointerPressed(false)
+	isDestroyed(false)
 {	
 	meterToPixel = 50.0f;
 
-	objectId = 0;
+	//objectId = 0;
 	xDrawScale=1;
 	yDrawScale=1;
 	xCollisionScale=1;
@@ -135,7 +65,7 @@ GameObject::GameObject(string objectName, Engine* engineRef, bool isDynamic, boo
 	}
 
 	b2Body* body;
-	body = phyxWorld->CreateBody(&BodyDef);
+	body = engineRef->phyxWorld->CreateBody(&BodyDef);
 	body->SetUserData((void*)this);
 
 	//Box.SetAsBox(((currentTexture->image->getSize().x*0.5f)/meterToPixel),((currentTexture->image->getSize().y*0.5f)/meterToPixel), b2Vec2((currentTexture->image->getSize().x*0.5f)/meterToPixel,(currentTexture->image->getSize().y*0.5f)/meterToPixel),  body->GetAngle());
@@ -304,7 +234,7 @@ void GameObject::OnDestroy()
 void GameObject::Destroy()
 {
 	isDestroyed = true;
-	pointerPressed = false;
+	//pointerPressed = false;
 	GetMyLayer()->RemoveObject(name);
 	//delete(this);
 }
@@ -356,12 +286,13 @@ void GameObject::Render(sf::RenderWindow* renderer/*, sf::Time globalTime*/)
 		
 }
 
-
+/*
 Vector2 GameObject::GetMainCameraPosition()
 {	
 	//return Vector2(-GameObject::engineRef->GetMainCameraPosition()._31/50,GameObject::engineRef->GetMainCameraPosition()._32/50);
 	return Vector2(0.0f,0.0f);
 }
+*/
 
 string GameObject::GetTextureName()
 {
@@ -373,6 +304,7 @@ string GameObject::GetTextureName()
 	return currentTexture->textureName;
 }
 
+/*
 void GameObject::RotateToLookAt(float x,float y)
 {
 	RotateToLookAt(Vector2(x,y));
@@ -405,6 +337,7 @@ void GameObject::TranslateVelocity (Vector2 direction, Coordinate rotCoords)
 		collisionBox->SetLinearVelocity(b2Vec2(direction.x, direction.y));
 	}
 }
+*/
 
 Vector2 GameObject::GetVelocity()
 {
@@ -441,6 +374,7 @@ void GameObject::AddForce(Vector2 direction, Coordinate rotCoords)
 	}
 }
 
+/*
 void GameObject::SetDrawScale (Vector2 scale)
 {
 	SetDrawScale(scale.x,scale.y);
@@ -541,6 +475,7 @@ Vector2 GameObject::GetGlobalPositionLocalOffset(float x, float y)
 	b2Vec2 vertexBeforeWorldPos = collisionBox->GetWorldPoint( vertexLocalPos );
 	return Vector2(vertexBeforeWorldPos.x,vertexBeforeWorldPos.y);
 }
+*/
 
 // Set the position(Vector2) of the GameObject 
 void GameObject::SetPosition(Vector2 &point)
@@ -645,6 +580,7 @@ bool GameObject::IsPlayingTexture()
 	return false;
 }
 
+/*
 bool GameObject::IsDynamic()
 {
 	return dynamic;
@@ -661,7 +597,7 @@ bool GameObject::RayCast(float angle, float lenght, string tag)
 
 	GameObject* object1; 
 
-	for(b2Body* b=phyxWorld->GetBodyList(); b; b=b->GetNext())
+	for(b2Body* b=engineRef->phyxWorld->GetBodyList(); b; b=b->GetNext())
 	{
 		object1 = (GameObject*)b->GetUserData();
 		if(object1->CompareTag(tag))
@@ -695,7 +631,7 @@ bool  GameObject::RayCast(Vector2 startPoint,float angle, float lenght, string t
 
 	GameObject* object1; 
 
-	for(b2Body* b=phyxWorld->GetBodyList(); b; b=b->GetNext())
+	for(b2Body* b=engineRef->phyxWorld->GetBodyList(); b; b=b->GetNext())
 	{
 		object1 = (GameObject*)b->GetUserData();
 		if(object1->CompareTag(tag))
@@ -723,18 +659,20 @@ Vector2 GameObject::GetWidthAndHeight()
 {
 	return Vector2((originalWidth * 0.5f)/50,(originalHeight * 0.5f)/50);
 }
-
+*/
 // Trigger the collider 
-void GameObject::IsTrigger(bool trigger)
+void GameObject::SetTrigger(bool trigger)
 {
 	collisionBox->GetFixtureList()->SetSensor(trigger);
 }
 
+/*
 // Return the trigger information
-bool GameObject::IsTriggered()
+bool GameObject::IsATrigger()
 {
 	return collisionBox->GetFixtureList()->IsSensor();
 }
+*/
 
 // Return the current gameobject angle
 float GameObject::GetRotationAngle()
@@ -771,6 +709,7 @@ void GameObject::SetAngularDamping(float damp)
 	collisionBox->SetAngularDamping(damp);
 }
 
+/*
 // Set the Sphere collision's to GameObject
 void GameObject::SetCollisionToSphere(float radius)
 {
@@ -784,7 +723,7 @@ void GameObject::SetCollisionToSphere(float radius)
 	 fixtureDef.shape = &circle;
 	 fixtureDef.density = density;
 	 fixtureDef.friction = friction;
-	 colliderType = ColliderType::SphereCollider;
+	 //colliderType = ColliderType::SphereCollider;
 
 	 collisionBox->CreateFixture(&fixtureDef);
 	 xCollisionScale=radius;
@@ -805,17 +744,10 @@ void GameObject::SetCollisionToCustom(const b2Vec2* vertices,int numOfVertices)
 	 fixtureDef.density = density;
 	 fixtureDef.friction = friction;
 	 // Set the Collider type to Custom
-	 colliderType = ColliderType::CustomCollider;
+	 //colliderType = ColliderType::CustomCollider;
 
 	 collisionBox->CreateFixture(&fixtureDef);
 	 xCollisionScale=1;
 	 yCollisionScale=1;
 }
-
-void GameObject::AddAnimation(string animName, Animation newAnim)
-{
-	AnimationData newData;
-	newData.animName = animName;
-	newData.anim = newAnim;
-	animations.push_back(newData);
-}
+*/

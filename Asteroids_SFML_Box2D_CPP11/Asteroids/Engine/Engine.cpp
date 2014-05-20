@@ -7,27 +7,20 @@
 #include "Layer.h"
 #include "TextureManager.h"
 
-class b2World;
-
-// Initialize Box2D Physics 
-b2World* phyxWorld;
-b2Fixture* fix;
-b2Vec2 gravity(0.0f, -10.0f);
-b2World myWorld(gravity);
 
 Engine::Engine():
 	layerCount(0),
 	frameNumber(0)
 {
-
-
+	// Initializing Box2D 
+	gravity = b2Vec2(0.0f, -10.0f);
+	myWorld = new b2World(gravity);
 }
 
 
 void Engine::Initialize()
 {
-	// Initializing Box2D 
-	phyxWorld = &myWorld;
+	phyxWorld = myWorld;
 	CollisionListener* gcl = new CollisionListener();
 	phyxWorld->SetContactListener(gcl);
 	
@@ -145,7 +138,7 @@ GameObject* Engine::GetDynamicObjectAtPoint(Vector2 _Point)
 	tempBody.lowerBound.Set(_Point.x - 0.001f, _Point.y - 0.001f);
 	tempBody.upperBound.Set(_Point.x + 0.001f, _Point.y + 0.001f);
 
-	myWorld.QueryAABB(&queryCallback, tempBody);
+	myWorld->QueryAABB(&queryCallback, tempBody);
 	
 	for (unsigned int i = 0; i < queryCallback.foundBodies.size(); i++) 
 	{
@@ -171,7 +164,7 @@ GameObject* Engine::GetStaticObjectAtPoint(Vector2 _Point)
 	tempBody.lowerBound.Set(_Point.x - 0.001f, _Point.y - 0.001f);
 	tempBody.upperBound.Set(_Point.x + 0.001f, _Point.y + 0.001f);
 
-	myWorld.QueryAABB(&queryCallback, tempBody);
+	myWorld->QueryAABB(&queryCallback, tempBody);
 
 	
   for (unsigned int i = 0; i < queryCallback.foundBodies.size(); i++) 
@@ -199,7 +192,7 @@ GameObject* Engine::GetObjectAtPoint(Vector2 _Point)
 	tempBody.lowerBound.Set(_Point.x - 0.0075f, _Point.y - 0.0075f); // Previous value of 0.001f was too small. So changed it to 0.0075f
 	tempBody.upperBound.Set(_Point.x + 0.0075f, _Point.y + 0.0075f); // Previous value of 0.001f was too small. So changed it to 0.0075f
 
-	myWorld.QueryAABB(&queryCallback, tempBody);
+	myWorld->QueryAABB(&queryCallback, tempBody);
 	
 	int index = queryCallback.foundBodies.size();			// Total bodies found
 	GameObject** foundObjects =  new GameObject*[index];	// Array to store bodies found

@@ -1,11 +1,12 @@
 #pragma once
 
-//#include "Controller.h"
 #include <string>
 #include "Box2D.h"
 #include <SFML/Graphics.hpp>
 #include "BasicMath.h"
 #include "MyQueryCallback.h"
+
+class b2World;
 
 class GameObject;
 class Layer;
@@ -16,7 +17,7 @@ using namespace std;
 /**
  * The Engine class is the mid-level game loop that handles the creation of all the game elements like the layers, gameobjects, etc.
  * The users however will NOT be using the Engine class directly. Instead, they will be using the Subclass of the Engine class -> the Game class.
- * In the Game, the users can add their game specific member variables and member functions. The Engine class how ever is the background class that handles the creation 
+ * In the Game, the users can add their game specific member variables and member functions. The Engine class however is the background class that handles the creation 
  * and deletion of all the game elements based on the requirements, amongst other things like the integration of the Box2D physics engine, etc.
  */
 class Engine
@@ -27,15 +28,6 @@ private:
 	b2AABB tempBody;
 	unsigned long frameNumber;		/** The current frame */
 
-	struct KeyStuct
-	{
-		bool thisUpdate;
-		bool lastUpdate;
-		//Windows::System::VirtualKey KeyID;
-	};
-
-	typedef std::map<std::string,KeyStuct> KeyMap;
-	KeyMap m_Key;
 	MyQueryCallback queryCallback;
 
 protected:
@@ -53,17 +45,85 @@ protected:
 
 public:
 
+	/**********************************VIRTUAL FUNCTIONS*************************************/
+	/****************************************************************************************/
+	/* The Following are virtual function to be implemented by the sub-class -> "Game"
+	/****************************************************************************************/
+
+	/**
+	 * It is called by the Engine on the Game object, when it is created
+	 */
+	virtual void Start(){};
+
+	/**
+	 * This it the game loop class. It is called once every frame by the Engine.
+	 */
+	virtual void Update(unsigned long frameNumber){}
+
+	/**
+	 * This is called by the Controller class when it receives a PointerPress event.
+	 * A pointer press event is fired when either a Tap or click occurs in the game.
+	 *
+	 * @param		_Point			The point in the game world where the event took place
+	 */
+	virtual void OnPointerPressed(Vector2 point){}
+
+	/**
+	 * This is called by the Controller class when it receives a PointerMoved event.
+	 * A pointer moved event is fired when either a 'Tap and drag' or 'Click and Drag' takes place.
+	 *
+	 * @param		_Point			The current pointer position while in the pointer moved event
+	 */
+	virtual void OnPointerMoved(Vector2 point){}
+
+	/**
+	 * This is called by the Controller class when it receives a PointerReleased event.
+	 * A pointer released event is fired when either an UnTap or click-released occurs in the game.
+	 *
+	 * @param		_Point			The point in the game world where the event took place
+	 */
+	virtual void OnPointerReleased(Vector2 point){}
+
+	/**
+	 * This is called by the Controller class when it receives a PointerPress event.
+	 * A pointer press event is fired when either a Tap or click occurs in the game.
+	 *
+	 * @param		_Point			The point in the game world where the event took place
+	 */
+	virtual void OnKeyPressed(sf::Keyboard::Key key){}
+
+	/**
+	 * This is called by the Controller class when it receives a PointerReleased event.
+	 * A pointer released event is fired when either an UnTap or click-released occurs in the game.
+	 *
+	 * @param		_Point			The point in the game world where the event took place
+	 */
+	virtual void OnKeyReleased(sf::Keyboard::Key key){}
+
+	/*******************************END OF VIRTUAL FUNCTIONS**********************************/
+	
+
+	/*****************************Box2D Physics World Declarations********************************/
+	b2World* phyxWorld;
+	b2Fixture* fix;
+	b2Vec2 gravity;
+	b2World* myWorld;
+	/***************************End of Box2D Physics World Declarations****************************/
+
+	/**
+	 * Holds and manages all the textures in the game. Adding, deleting texturues and freeing memory is handled by the texture manager class.
+	 */
 	TextureManager * textureManager;
 
 	/**
-	 * Initializes the Engine class. Sets references to the Direct2d Device, Direct2D Device Context, creates the Engine camera, TextureManager, AudioManager, Physics world etc.
+	 * Initializes the Engine class. Sets references to the SFML RenderWindow, TextureManager, Physics world etc.
 	 */
 	void Initialize();	
 
 	/**
 	 * Renders all the existing GameObjects to the screen
 	 */
-	void Render(/*sf::Time globalTime*/);
+	void Render();
 
 	//Default Constructor
 	Engine();
@@ -106,38 +166,26 @@ public:
 	/**
 	 * Gets the dynamic gameobject at the specified point
 	 *
-	 * @param		_Point		The point to check for dynamic body
+	 * @param		point		The point to check for dynamic body
 	 * @return		A GameObject at the given point if it is a dynamic body. If no dynamic GameObject is found at point, then it returns nullptr
 	 */
-	GameObject* GetDynamicObjectAtPoint(Vector2 _Point);
+	GameObject* GetDynamicObjectAtPoint(Vector2 point);
 
 	/**
 	 * Gets the gameobject at the specified point
 	 *
-	 * @param		_Point		The point to check for game object
-	 * @return		A GameObject at the given point. If no GameObject is found at point, then it returns nullptr
+	 * @param		point		The point to check for game object
+	 * @return		A GameObject at the given point if it is a dynamic physics body. If no dynamic GameObject is found at point, then it returns nullptr
 	 */
-	GameObject* GetObjectAtPoint(Vector2 _Point);
+	GameObject* GetObjectAtPoint(Vector2 point);
 
 	/**
 	 * Gets the static gameobject at the specified point
 	 *
-	 * @param		_Point		The point to check for static body
-	 * @return		A GameObject at the given point if it is a static body. If no static GameObject is found at point, then it returns nullptr
+	 * @param		point		The point to check for static body
+	 * @return		A GameObject at the given point if it is a non-dynamic/static physics body. If no static GameObject is found at point, then it returns nullptr
 	 */
-	GameObject* GetStaticObjectAtPoint(Vector2 _Point);
-
-	/**
-	 * A virtual function to be implemented by the Engine class's sub-class -> Game
-	 * It is called by the Engine on the Game object, when it is created
-	 */
-	virtual void Start(){};
-
-	/**
-	 * A virtual function to be implemented by the Engine class's sub-class -> Game
-	 * It is called by the Engine on the Game object each frame
-	 */
-	virtual void Update(unsigned long frameNumber){};
+	GameObject* GetStaticObjectAtPoint(Vector2 point);
 
 
 	/**

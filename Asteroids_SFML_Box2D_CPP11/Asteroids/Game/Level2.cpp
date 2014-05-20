@@ -56,6 +56,11 @@ void Level2::AddObjectsToLayers()
 	gameEngine->GetLayer(rocksLayer)->AddObjectToLayer(bigRock2);
 	//gameEngine->GetLayer(rocksLayer)->AddObjectToLayer(bigRock3);
 	levelDone = false;
+
+	if(music.openFromFile("Assets/Lazer.aif"))
+	{
+		music.play();
+	}
 }
 
 void Level2::LevelWon()

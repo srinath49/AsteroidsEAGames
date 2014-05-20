@@ -8,20 +8,13 @@
 #include "Layer.h"
 #include "TextureManager.h"
 #include "Texture.h"
-#include "AnimatedSprite.hpp"
-#include "Animation.h"
+
 
 class Engine;
 class Layer;
 class TextureManager;
 
 struct TextureEntry;
-
-struct	AnimationData
-{
-	string animName;
-	Animation anim;
-};
 
 using namespace std;
 
@@ -39,19 +32,17 @@ enum Coordinate
  */
 enum ColliderType
 {
-	BoxCollider,		/** Box/Rectangular shaped collider */
-	SphereCollider,		/** Sphere/Circle shaped collider */
-	CustomCollider		/** Custom/User-Defined shaped collider */
+	BoxCollider		/** Box/Rectangular shaped collider */
 };
 
 
 /**
- * The GameObject class is by far the Most Important class in the entire engine. The engine is extremely Game-Object Oriented Engine. This means, 
- * that the engine expects almost everything in your game to either be a GameObject or a sub-class of GameObject. This does not mean that you cannot
- * directly use Direct2D etc, to draw or implement your elements, but the engine will not know how to handle them or be able to apply physics to them
- * unless you explicitly specify/code/program how they should be handled.
+ * The GameObject class is by far the Most Important class in the entire engine. The engine is extremely "Game-Object Oriented Engine". This means, 
+ * that the engine expects almost everything in the game to either be a GameObject or a sub-class of GameObject. This does not mean that you cannot
+ * directly use SFML etc, to draw or implement your elements, but the engine will not know how to handle them or be able to apply physics to them
+ * unless you explicitly specify(program) how they should be handled.
  *
- * NOTE: It is strongly recommended that you always use GameObjects or create sub-classes of GameObject to create your in game elements/objects.
+ * NOTE: It is strongly recommended that the user always uses GameObjects or create sub-classes of GameObject to create the in game elements/objects.
  */
 class GameObject
 {
@@ -62,7 +53,7 @@ protected:
 	string name;
 
 	/**
-	 * Tag of the object
+	 * Tag of the object. Used Heavily for searching an object and for checking collisions with a group of different game objects
 	 */
 	string tag;
 
@@ -77,32 +68,32 @@ protected:
     int	heightScreen;
 
 	/**
-	 * Is this object a dynamic body
-	 */
-	bool dynamic;
-
-	/**
 	 * Is this object a physics body
 	 */
 	bool isPhyxBody;
+
+	/**
+	 * Is this object a dynamic physics body
+	 */
+	bool dynamic;
 	
 	/**
-	 * Screen Offset in x-axis
+	 * Screen Offset in x-axis. Used for drawing the objects in the coordinate system of Box2D(Origin at (0,0))
 	 */
 	float offsetX;
 
 	/**
-	 * Screen Offset in y-axis
+	 * Screen Offset in x-axis. Used for drawing the objects in the coordinate system of Box2D(Origin at (0,0))
 	 */
 	float offsetY;
 
 	/**
-	 * Screen x-axis position of the texture, in pixels
+	 * Screen x-axis position of the texture/sprite, in pixels. 
 	 */
  	float drawPositionX; 
 
 	/**
-	 * Screen x-axis position of the texture, in pixels
+	 * Screen x-axis position of the texture/sprite, in pixels
 	 */
 	float drawPositionY;
 
@@ -156,21 +147,11 @@ protected:
 	 * The current texture of the object
 	 */
 	Texture* currentTexture;
-
+	
 	/**
-	 *Stores all the animations inside an AnimationData list
+	 * A list that stores all the textures/spritesheets of this object
 	 */
-	list<AnimationData> animations;
-
-	/**
-	 * An iterator for traversing the animations list
-	 */
-	list<AnimationData>::iterator anamationsIterator;
-
-	/**
-	 *	The Current Animation to Play
-	 */
-	Animation	currentAnim;
+	list<TextureEntry *> textureHolder;
 
 	/**
 	 * The current shape of the collider
@@ -179,20 +160,15 @@ protected:
 
 public:
 
-	/**
-	 * A list that stores all the textures/spritesheets of this object
-	 */
-	list<TextureEntry *> textureHolder;
-
 	float meterToPixel; //50 pixels to a meter
 
 	/**
 	 * The Object's Id
 	 */
-	int objectId;
+	//int objectId;
 
 	/**
-	 * Is this object active. If not do not simulate physics
+	 * Is this object active in the physics world. If not do not simulate physics
 	 */
 	bool isActive;
 
@@ -217,14 +193,14 @@ public:
 	Engine* engineRef;
 
 	/**
-	 * Is This Object Destroyed
+	 * Is this Object Destroyed. Used to avoid rendering or updating an object that has been Destroyed.
 	 */
 	bool isDestroyed;
 
 	/**
-	 * Is Pointer Pressed on this object
+	 * Is Pointer Pressed on this object.
 	 */
-	bool pointerPressed;
+	//bool pointerPressed;
 
 	/**
 	 * If true, then the texture is rotated along with the collider. 
@@ -245,7 +221,7 @@ public:
 	 * @param		physics				is this object a physics body
 	 * @param		&position			The on-screen position of the game object
 	 */
-	GameObject(string objectName, Engine* engineRef, bool dynamic, bool physicsBody, Vector2 &position);
+	//GameObject(string objectName, Engine* engineRef, bool dynamic, bool physicsBody, Vector2 &position);
 
 	/**
 	 * Textured GameObject: Creates a gameobject that has a default texture/spritesheet to start with 
@@ -273,7 +249,7 @@ public:
 	 *
 	 * @param		m_d2dContext		A reference to the Direct2D device context, used by the engine to render the game object
 	 */
-	void Render(sf::RenderWindow* renderer/*, sf::Time globalTime*/);
+	void Render(sf::RenderWindow* renderer);
 
 	/**
 	 * This is a virtual function that should be implemented by the GameObject sub-classes.
@@ -298,6 +274,13 @@ public:
 	 * @param		collisionObject			The game object that this object collided with
 	 */
 	virtual void BeginContact(GameObject* object){}
+
+	/**
+	 * This is a virtual function that should be implemented by the GameObject sub-classes.
+	 * The Engine calls the Collided function when it detects collision between this gameobject and another gameobject in the game
+	 *
+	 * @param		collisionObject			The game object that this object collided with
+	 */
 	virtual void EndContact(GameObject* object){}
 
 	/**
@@ -308,23 +291,24 @@ public:
 	virtual string GetType() { return "GameObject"; }
 
 	/**
-	 * This is called by the engine when an object receives a Touch Input of click input
+	 * This is called by the current level when an object receives a click input
 	 *
-	 * @param		point		The point in the world where the press event took place
+	 * @param		point		The point in the world where the click event took place
 	 */
 	virtual void OnPointerPressed(Vector2 point){}
 
 	/**
-	 * Is called by the engine when this object receives Drag input via 'Touch and Drag' or 'Click and Drag'.
+	 * Is called by the current level when this object receives Drag input or sometimes simply 
+	 * when mouse is moved according to gameplay.
 	 *
-	 * @param		point		the current touch point in the world, updated each frame until touch/click is released
+	 * @param		point		the current mouse point in the world, updated each frame until
 	 */
 	virtual void OnPointerMoved(Vector2 point){}
 
 	/**
-	 * Is called by the engine when this object receives input via UnTouch or Click-Release.
+	 * Is called by the current level when this object receives input Click-Release.
 	 *
-	 * @param		point		the current touch point in the world, updated each frame until touch/click is released
+	 * @param		point		the current point in the world where click was released.
 	 */
 	virtual void OnPointerReleased(Vector2 point){}
 
@@ -368,7 +352,7 @@ public:
 	 * @param		direction		The offset to add the object's velocity to. Ex: (2,3) -> adds 2 units on the x- axis and 3 units in the y-axis to the objects velocity
 	 * @param		rotCoords		Coordinates to translate the velocity in. Global or Local
 	 */
-	void TranslateVelocity(Vector2 direction, Coordinate rotCoords);
+	//void TranslateVelocity(Vector2 direction, Coordinate rotCoords);
 
 	/**
 	 * Translates or modifies the linear velocity of the object in x and y axis in the specified coordinate system
@@ -377,14 +361,14 @@ public:
 	 * @param		y				y-axis value to add to the velocity
 	 * @param		rotCoords		Coordinates to translate the velocity in. Global or Local
 	 */
-	void TranslateVelocity (float x,float y, Coordinate rotCoords);
+	//void TranslateVelocity (float x,float y, Coordinate rotCoords);
 
 	/**
 	 * Rotates the game object to look at a point(Vector2(x,y)) in the game world
 	 *
 	 * @param		lookAt			Point in the world to look at
 	 */
-	void RotateToLookAt(Vector2 lookAt);
+	//void RotateToLookAt(Vector2 lookAt);
 
 	/**
 	 * Rotates the game object to look at a point(float x, float y) in the game world
@@ -392,7 +376,7 @@ public:
 	 * @param		x		x-axis value to look at
 	 * @param		y		y-axis value to look at
 	 */
-	void RotateToLookAt(float x,float y);
+	//void RotateToLookAt(float x,float y);
 
 	/**
 	 * Rotates the object around the given pivot point rathar than the the default point (Center of the object).
@@ -400,7 +384,7 @@ public:
 	 * @param		angle		The angle in degrees to rotate the object by.
 	 * @param		point		The point in the world to use as the pivot point to rotate the object around		
 	 */
-	void RotateAroundALocalPoint(float angle, Vector2 point);
+	//void RotateAroundALocalPoint(float angle, Vector2 point);
 
 	/**
 	 * Rotates the object around the given pivot point rathar than the the default point (Center of the object).
@@ -409,7 +393,7 @@ public:
 	 * @param		x			The x-axis point in the world to use as the pivot point to rotate the object around		
 	 * @param		y			The y-axis point in the world to use as the pivot point to rotate the object around		
 	 */
-	void RotateAroundALocalPoint(float angle, float x, float y);
+	//void RotateAroundALocalPoint(float angle, float x, float y);
 
 	/*
 	 * Obselete function. Needs Further implementation
@@ -423,14 +407,14 @@ public:
 	 * @param		x		size in x-axis
 	 * @param		y		size in y axis
 	 */
-	void SetDrawScale(float x,float y);
+	//void SetDrawScale(float x,float y);
 
 	/**
 	 * Sets the size of the object's texture without changing the collision box size
 	 *
 	 * @param		Scale		size in x and y axis 
 	 */
-	void SetDrawScale (Vector2 scale);
+	//void SetDrawScale (Vector2 scale);
 
 	/**
 	 * Sets the size of the collision box without changing the size of the texture
@@ -440,7 +424,7 @@ public:
 	 *
 	 * @param		Scale		The size to set the collision box to
 	 */
-	void SetCollisionScale (Vector2 scale);
+	//void SetCollisionScale (Vector2 scale);
 
 	/**
 	 * Sets the size of the collision box without changing the size of the texture
@@ -451,14 +435,14 @@ public:
 	 * @param		x		size in x-axis
 	 * @param		y		size in y axis
 	 */
-	void SetCollisionScale(float x,float y);
+	//void SetCollisionScale(float x,float y);
 
 	/**
 	 * Sets the size of both the Texture and the collision box to the given size
 	 * 
 	 * @param		&Scale			The size to set the collision box and the texture to
 	 */
-	void SetScale(Vector2 &scale);
+	//void SetScale(Vector2 &scale);
 
 	/**
 	 * Sets the size of both the Texture and the collision box to the given size
@@ -466,14 +450,14 @@ public:
 	 * @param		x		size in x-axis
 	 * @param		y		size in y axis
 	 */
-	void SetScale(float x,float y);
+	//void SetScale(float x,float y);
 
 	/**
 	 * Return the current position of the main game camera
 	 *
 	 * @return		Current Position of the game's main camera
 	 */
-	Vector2 GetMainCameraPosition();
+	//Vector2 GetMainCameraPosition();
 
 	/**
 	 * Returns Box2D world position as game world position
@@ -481,7 +465,7 @@ public:
 	 * @param		Point		The Box2D world point to convert to game world point
 	 * @return					The game world point of the Box2D point passed
 	 */
-	Vector2 GetGlobalPositionLocalOffset(Vector2 point);
+	//Vector2 GetGlobalPositionLocalOffset(Vector2 point);
 
 	/**
 	 * Returns Box2D world position as game world position
@@ -490,7 +474,7 @@ public:
 	 * @param		y			The Box2D world point's y-axis value 
 	 * @return					The gamw world point of the Box2D point passed
 	 */
-	Vector2 GetGlobalPositionLocalOffset(float x, float y);
+	//Vector2 GetGlobalPositionLocalOffset(float x, float y);
 
 	/**
 	 * Sets the Position of the game object to the specified point in the game world
@@ -534,7 +518,7 @@ public:
 	 *
 	 * @return		Collision scale vector
 	 */
-	Vector2 GetCollisionScale();
+	//Vector2 GetCollisionScale();
 
 	/**
 	 * Returns current texture draw scale vector.
@@ -543,7 +527,7 @@ public:
 	 *
 	 * @return		The normalized value of the texture draw scale scale vector
 	 */
-	Vector2 GetDrawScale();	
+	//Vector2 GetDrawScale();	
 
 	/**
 	 * This function returns the current angle of the game object in degrees
@@ -632,7 +616,7 @@ public:
 	 * @param		Tag			The Tag value to check against the objects
 	 * @return		true = if objects found in ray, false = no objects in ray
 	 */
-	bool RayCast(float angle, float lenght, string tag);
+	//bool RayCast(float angle, float lenght, string tag);
 
 	/**
 	 * Fires a ray from the given position to the given length, in the angle specified. 
@@ -645,21 +629,21 @@ public:
 	 * @param		Tag					The Tag value to check against the objects
 	 * @return							true = if objects found in ray, false = no objects in ray
 	 */
-	bool RayCast(Vector2 startPoint,float angle, float lenght, string tag);
+	//bool RayCast(Vector2 startPoint,float angle, float lenght, string tag);
 
 	/**
 	 * Returns the actual width and the actual height of the object's current texture, as a Vector2 object
 	 *
 	 * @return			Vector2(Width, Height) of current texture.
 	 */
-	Vector2 GetWidthAndHeight();
+	//Vector2 GetWidthAndHeight();
 
 	/**
 	 * Sets the object's collider to a sphere with the given radious rather than the default box shaped collider.
 	 *
 	 * @param		_Radious		The radious of the sphere collider
 	 */
-	void SetCollisionToSphere(float radius);
+	//void SetCollisionToSphere(float radius);
 
 	/**
 	 * Sets the object's collider to a custom shape with the given vertices rather than the default box shaped collider.
@@ -667,7 +651,7 @@ public:
 	 * @param		vertices			A dynamic array of vertices
 	 * @param		_NumberVertices		Number of vertices
 	 */
-	void SetCollisionToCustom(const b2Vec2* vertices, int numOfVertices);
+	//void SetCollisionToCustom(const b2Vec2* vertices, int numOfVertices);
 
 	/**
 	 * Sets the friction of the game object.
@@ -690,14 +674,14 @@ public:
 	 *
 	 * @param		_Trigger		true = makes the object a trigger, false = makes the object a normal physics body.
 	 */
-	void IsTrigger(bool trigger);
+	void SetTrigger(bool trigger);
 
 	/**
 	 * Returns whether or not this object is a trigger
 	 *
 	 * @return		true if object is a trigger, false if object is not a trigger
 	 */
-	bool IsTriggered();
+	bool IsATrigger(){return collisionBox->GetFixtureList()->IsSensor();}
 
 	/**
 	 * Add a texture to the object's list of textures
@@ -792,7 +776,7 @@ public:
 	 *
 	 * @return		true = dynamic body, false = static body
 	 */
-	bool IsDynamic();
+	bool IsDynamic(){return dynamic;}
 
 	/**
 	 * Returns whether or not this object is a physics body or not
@@ -826,10 +810,6 @@ public:
 	 */
 	void OnDestroy();
 
-	/**
-	 * Current Transform
-	 */
-	//D2D1::Matrix3x2F	m_Transform;
 
 	/**
 	 * Applies a damping value to the  velocity of the object
@@ -840,21 +820,6 @@ public:
 	 * Applies a damping value to the  velocity of the object
 	 */
 	void SetAngularDamping(float damping);
-
-	/**
-	 *
-	 */
-	void AddAnimation(string animName, Animation anim);
-
-	/**
-	 *
-	 */
-	void SetCurrentAnimation(Animation anim){currentAnim = anim;}
-
-	/**
-	 *
-	 */
-	Animation GetCurrentAnimation(){return currentAnim;}
 
 	Texture* GetCurrentTexture(){return currentTexture;}
 };

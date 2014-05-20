@@ -18,7 +18,7 @@ void Player::EndContact(GameObject*)
 
 void Player::Start()
 {
-	IsTrigger(true);
+	SetTrigger(true);
 	SetGravity(0.0f);
 	SetVelocity(0.0f,0.0f);
 	SetFriction(0.1f);
