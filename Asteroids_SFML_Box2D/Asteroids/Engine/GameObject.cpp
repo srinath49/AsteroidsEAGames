@@ -1,8 +1,10 @@
 #include "GameObject.h"
 #include "Layer.h"
 
+
 extern b2World* phyxWorld; 
-float meterToPixel = 50.0; //50 pixels to a meter
+float meterToPixel = 30.0; //50 pixels to a meter
+
 
 GameObject::GameObject() : 
 	isActive(true),
@@ -132,8 +134,12 @@ GameObject::GameObject(string objectName, Engine* engineRef, bool isDynamic, boo
 	b2Body* body;
 	body = phyxWorld->CreateBody(&BodyDef);
 	body->SetUserData((void*)this);
+
+	//Box.SetAsBox(((currentTexture->image->getSize().x*0.5f)/meterToPixel),((currentTexture->image->getSize().y*0.5f)/meterToPixel), b2Vec2((currentTexture->image->getSize().x*0.5f)/meterToPixel,(currentTexture->image->getSize().y*0.5f)/meterToPixel),  body->GetAngle());
 	//Box.SetAsBox((currentTexture->image->getSize().x/100.0f),(currentTexture->image->getSize().y/100.0f)/*, b2Vec2((currentTexture->image->getSize().x*0.5f),(currentTexture->image->getSize().y*0.5f)),  body->GetAngle()*/);
-	Box.SetAsBox(((currentTexture->image->getSize().x*0.5f)/meterToPixel),((currentTexture->image->getSize().y*0.5f)/meterToPixel), b2Vec2((currentTexture->image->getSize().x*0.5f)/meterToPixel,(currentTexture->image->getSize().y*0.5f)/meterToPixel),  body->GetAngle());
+	//Box.SetAsBox(((currentTexture->image->getSize().x*0.5f)),((currentTexture->image->getSize().y*0.5f)), b2Vec2((currentTexture->image->getSize().x*0.5f),(currentTexture->image->getSize().y*0.5f)),  body->GetAngle());
+	Box.SetAsBox((position.x/meterToPixel),(position.x/meterToPixel), b2Vec2((currentTexture->image->getSize().x*0.5f)/meterToPixel,(currentTexture->image->getSize().y*0.5f)/meterToPixel), body->GetAngle());
+	//Box.SetAsBox(((currentTexture->image->getSize().x*0.02f)),((currentTexture->image->getSize().y*0.02f)), b2Vec2((currentTexture->image->getSize().x*0.02f),(currentTexture->image->getSize().y*0.02f)),  body->GetAngle());
 	//Box.SetAsBox((5.0f)/50,(5.0f)/50);
 
 	b2FixtureDef fixtureDef;
@@ -154,6 +160,7 @@ GameObject::GameObject(string objectName, Engine* engineRef, bool isDynamic, boo
 	// Setting the original Height and width
 	originalWidth = currentTexture->image->getSize().x;
 	originalHeight = currentTexture->image->getSize().y;
+
 }
 
 // Gives your Game Object a Tag. Useful for grouping your Objects with a name. For Example you can tag your Environment Objects as "Furniture" or "Explosive", etc
@@ -304,8 +311,15 @@ void GameObject::Render(sf::RenderWindow* renderer/*, sf::Time globalTime*/)
 	heightScreen = renderer->getSize().y;
 	offsetX = (widthScreen*0.5f)/meterToPixel; //x offset in meters (400/50 = 8). This will put the 0 x-coordinate in the middle of the screen horizontally.
 	offsetY = (heightScreen*0.5f)/meterToPixel; //y offset in meters (300/50 = 6). This will put the 0 y-coordinate in the middle of the screen vertically.
+	//offsetX = (widthScreen*0.02f); //x offset in meters (400/50 = 8). This will put the 0 x-coordinate in the middle of the screen horizontally.
+	//offsetY = (heightScreen*0.02f); //y offset in meters (300/50 = 6). This will put the 0 y-coordinate in the middle of the screen vertically.
+	//offsetX = 0.0f;
+	//offsetY = 0.0f;
 	drawPositionX = (position.x + offsetX) * meterToPixel; //( (0m) +  8.0m )* 50 = 400 pixels
 	drawPositionY = (-position.y + offsetY) * meterToPixel; //( -(4m) + 6.0m ) * 50 = 100 pixels
+
+	drawPositionX -= currentTexture->image->getSize().x/2;
+	drawPositionY -= currentTexture->image->getSize().y/2;
 
 	currentTexture->sprite->setRotation(GetRotationAngle());
 	currentTexture->sprite->setPosition(drawPositionX, drawPositionY);
@@ -322,6 +336,7 @@ void GameObject::Render(sf::RenderWindow* renderer/*, sf::Time globalTime*/)
 		currentTexture->PlaySprite(/*currentAnim*/);
 		// Draw Bitmap
 		renderer->draw(*currentTexture->sprite, sf::RenderStates::Default);
+		//collisionBox
 	}
 
 	position =  Vector2(collisionBox->GetPosition().x, collisionBox->GetPosition().y);

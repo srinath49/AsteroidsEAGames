@@ -21,13 +21,14 @@ public:
 
 	enum  PlayerState
 	{
-		MovingState,
+		NormalState,
 		DyingState,
 		DeadState
 	};
 
 	int Score;
 	GameLevel* currentLevel;
+	int lives;
 
 	Player() : GameObject(){}
 	Player(string objectName, Engine* gameEngine, bool dynamic, bool physicsBody, Vector2 &_Position, string _TextureName, bool _IsSprite, int _Rows, int _Columns) : GameObject(objectName, gameEngine, dynamic, physicsBody, _Position, _TextureName, _IsSprite, _Rows, _Columns) {this->gameEngine = gameEngine;}

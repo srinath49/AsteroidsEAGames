@@ -27,5 +27,8 @@ public:
 	virtual void OnKeyPressed(sf::Keyboard::Key key){}
 
 	virtual void OnKeyReleased(sf::Keyboard::Key key){}
+
+	int enemiesCount;
+	int rocksCount;
 };
 

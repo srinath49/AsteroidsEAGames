@@ -5,12 +5,10 @@ void Bullet::BeginContact(GameObject* object)
 {
 	if(object->CompareTag("Rock"))
 	{
-		((AsteroidRock *)object)->BlastRock();
 		destroy = true;
 	}
 	else if(object->CompareTag("Enemy"))
 	{
-		//((EnemyShip *)object)->SetState(Dying);
 		destroy = true;
 	}
 	

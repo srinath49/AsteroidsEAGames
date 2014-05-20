@@ -4,8 +4,9 @@
 void Player::BeginContact(GameObject* object)
 {
 	if(object->CompareTag("Rock"))
-	{
-		SetState(DyingState);
+	 {
+  		SetState(DyingState);
+		this;
 	}	
 }
 
@@ -20,7 +21,8 @@ void Player::Start()
 	SetVelocity(0.0f,0.0f);
 	SetFriction(0.1f);
 	SetDamping(0.4f);
-	SetAngularDamping(0.8f);
+	SetAngularDamping(1.0f);
+	lives = 3;
 }
 
 void Player::Update(unsigned long frameNumber)
@@ -28,8 +30,17 @@ void Player::Update(unsigned long frameNumber)
 	switch(currentState)
 	{
 		case DyingState:
-			Destroy();
-			currentLevel->PlayerNull();
+     			lives--;
+			if(lives <= 0)
+			{
+				Destroy();
+				currentLevel->PlayerNull();
+			}
+			else
+			{
+				SetPosition(0,0);
+			}
+			SetState(NormalState);
 			break;
 	}
 }
@@ -122,15 +133,15 @@ void Player::MovePlayer(MoveDirection direction)
 		return;
 	}
 
-	if(GetVelocitySize() >= 5.0)
+	if(GetVelocitySize() >= 8.0)
 	{
 		return;
 	}
 	switch(direction)
 	{
-		case Up: AddForce(0.0f, 3.75f, Coordinate::Local);
+		case Up: AddForce(0.0f, 7.0f, Coordinate::Local);
 			break;
-		case Down: AddForce(0.0f, -3.75f, Coordinate::Local);
+		case Down: AddForce(0.0f, -7.0f, Coordinate::Local);
 			break;
 	}
 }
@@ -142,15 +153,17 @@ void Player::RotatePlayer(RotationAngle angle)
 		return;
 	}
 
-	if(collisionBox->GetAngularVelocity() >= 3.0)
+	if(collisionBox->GetAngularVelocity() >= 5.0)
 	{
 		return;
 	}
 	switch(angle)
 	{
-		case Right: collisionBox->SetAngularVelocity(collisionBox->GetAngularVelocity()+0.05f);
+		case Right: collisionBox->SetAngularVelocity(collisionBox->GetAngularVelocity()+0.675f);
+			//collisionBox->SetTransform(collisionBox->GetPosition(), this->GetRotationAngle()+0.075f);
 			break;
-		case Left: collisionBox->SetAngularVelocity(collisionBox->GetAngularVelocity()-0.05f);
+		case Left: collisionBox->SetAngularVelocity(collisionBox->GetAngularVelocity()-0.675f);
+			//collisionBox->SetTransform(collisionBox->GetPosition(), this->GetRotationAngle()-0.075f);
 			break;
 	}
 }
@@ -165,5 +178,5 @@ void Player::Fire()
 
 	Bullet* newBullet = new Bullet("Bullet", gameEngine, true, true, position, "bullet.png", false, 1, 1);
  	newBullet->SetRotation(this->GetRotationAngle());
-	gameEngine->GetLayer(1)->AddObjectToLayer(newBullet);
+	gameEngine->GetLayer(2)->AddObjectToLayer(newBullet);
 }

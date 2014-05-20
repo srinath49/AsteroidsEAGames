@@ -8,18 +8,22 @@ void MenuScreenLevel::CreateLayers()
 void MenuScreenLevel::CreateGameObjects()
 {
 	//BackgroundLayer GameObjects
-	screenBackground = new Background("ScreenBackground" , gameEngine , false , false , Vector2(0 , 0) , "BatmanAttackDown.png" , false , 1 , 1);
+	screenBackground = new Background("ScreenBackground" , gameEngine , false , false , Vector2(0.0f, 0.0f), "BG_Rocks.png", false, 1, 1);
+	screenMessage = new Background("screenMessage" , gameEngine , false , false , Vector2(0.0f, 0.0f), "EnterToStart.png", false, 1, 1);
 }
 
 void MenuScreenLevel::AddObjectsToLayers()
 {
 	//BackgroundLayer GameObjects
 	gameEngine->GetLayer(backgroundLayer)->AddObjectToLayer(screenBackground);
+	gameEngine->GetLayer(backgroundLayer)->AddObjectToLayer(screenMessage);
 }
 
 void MenuScreenLevel::LevelWon()
 {
-	//gameEngine->RequestNextLevelLoad();
+	gameEngine->RequestNextLevelLoad();
+	screenBackground->Destroy();
+	screenMessage->Destroy();
 }
 
 void MenuScreenLevel::LevelLost()
@@ -52,17 +56,15 @@ void MenuScreenLevel::OnKeyPressed(sf::Keyboard::Key key)
 	switch(key)
 	{
 		case sf::Keyboard::Return:
-			gameEngine->RequestNextLevelLoad();
-			//player->AddForce(1.0f, 0.0f, Coordinate::Global);
-			//printf("Right Pressed\n");
+			
+			LevelWon();
 			break;
 		case sf::Keyboard::Escape:
-			//gameEngine->renderer->close();
 			break;
 	}
 }
 
 void MenuScreenLevel::OnKeyReleased(sf::Keyboard::Key key)
 {
-	screenBackground->Destroy();
+	
 }
