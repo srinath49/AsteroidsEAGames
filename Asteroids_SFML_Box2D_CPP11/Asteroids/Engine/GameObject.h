@@ -192,6 +192,7 @@ public:
 	 */
 	Engine* engineRef;
 
+
 	/**
 	 * Is this Object Destroyed. Used to avoid rendering or updating an object that has been Destroyed.
 	 */
@@ -213,18 +214,7 @@ public:
 	GameObject();
 
 	/**
-	 * Empty GameObject: Creates an empty gameobject that has no default texture, and has a collision box scale of (1,1) 
-	 * 
-	 * @param		objectName			Unique Name or Identifier of this game object
-	 * @param		engineRef			Reference of the Engine/Game class. Required for drawing the string to the screen
-	 * @param		dynamic				is this object a dynamic physics body
-	 * @param		physics				is this object a physics body
-	 * @param		&position			The on-screen position of the game object
-	 */
-	//GameObject(string objectName, Engine* engineRef, bool dynamic, bool physicsBody, Vector2 &position);
-
-	/**
-	 * Textured GameObject: Creates a gameobject that has a default texture/spritesheet to start with 
+	 * Full GameObject: Creates a gameobject that has a default texture/spritesheet to start with 
 	 * 
 	 * @param		objectName			Unique Name or Identifier of this game object
 	 * @param		engineRef			Reference of the Engine/Game class. Required for drawing the string to the screen
@@ -345,136 +335,7 @@ public:
 	 * @param		rotCoords		Coordinates to translate the object in. Global or Local
 	 */
 	void Translate(float x,float y, Coordinate rotCoords);
-	
-	/**
-	 * Translates or modifies the linear velocity of the object in x and y axis in the specified coordinate system
-	 * 
-	 * @param		direction		The offset to add the object's velocity to. Ex: (2,3) -> adds 2 units on the x- axis and 3 units in the y-axis to the objects velocity
-	 * @param		rotCoords		Coordinates to translate the velocity in. Global or Local
-	 */
-	//void TranslateVelocity(Vector2 direction, Coordinate rotCoords);
 
-	/**
-	 * Translates or modifies the linear velocity of the object in x and y axis in the specified coordinate system
-	 *
-	 * @param		x				x-axis value to add to the velocity
-	 * @param		y				y-axis value to add to the velocity
-	 * @param		rotCoords		Coordinates to translate the velocity in. Global or Local
-	 */
-	//void TranslateVelocity (float x,float y, Coordinate rotCoords);
-
-	/**
-	 * Rotates the game object to look at a point(Vector2(x,y)) in the game world
-	 *
-	 * @param		lookAt			Point in the world to look at
-	 */
-	//void RotateToLookAt(Vector2 lookAt);
-
-	/**
-	 * Rotates the game object to look at a point(float x, float y) in the game world
-	 *
-	 * @param		x		x-axis value to look at
-	 * @param		y		y-axis value to look at
-	 */
-	//void RotateToLookAt(float x,float y);
-
-	/**
-	 * Rotates the object around the given pivot point rathar than the the default point (Center of the object).
-	 *
-	 * @param		angle		The angle in degrees to rotate the object by.
-	 * @param		point		The point in the world to use as the pivot point to rotate the object around		
-	 */
-	//void RotateAroundALocalPoint(float angle, Vector2 point);
-
-	/**
-	 * Rotates the object around the given pivot point rathar than the the default point (Center of the object).
-	 *
-	 * @param		angle		The angle in degrees to rotate the object by.
-	 * @param		x			The x-axis point in the world to use as the pivot point to rotate the object around		
-	 * @param		y			The y-axis point in the world to use as the pivot point to rotate the object around		
-	 */
-	//void RotateAroundALocalPoint(float angle, float x, float y);
-
-	/*
-	 * Obselete function. Needs Further implementation
-	 *
-	 *  void RotateToLookAtTime(Vector2 _LookAt,float change);
-	 */
-
-	/**
-	 * Sets the size of the object's texture without changing the collision box size
-	 * 
-	 * @param		x		size in x-axis
-	 * @param		y		size in y axis
-	 */
-	//void SetDrawScale(float x,float y);
-
-	/**
-	 * Sets the size of the object's texture without changing the collision box size
-	 *
-	 * @param		Scale		size in x and y axis 
-	 */
-	//void SetDrawScale (Vector2 scale);
-
-	/**
-	 * Sets the size of the collision box without changing the size of the texture
-	 * Note: This function only works on the default collision shape i.e., a 'Box' shape collider. 
-	 * Using this function on a custom collider shape or a sphere collider shape or any other collider shape
-	 * will give you an assertion failed error
-	 *
-	 * @param		Scale		The size to set the collision box to
-	 */
-	//void SetCollisionScale (Vector2 scale);
-
-	/**
-	 * Sets the size of the collision box without changing the size of the texture
-	 * Note: This function only works on the default collision shape i.e., a 'Box' shape collider. 
-	 * Using this function on a custom collider shape or a sphere collider shape or any other collider shape
-	 * will give you an assertion failed error
-	 *
-	 * @param		x		size in x-axis
-	 * @param		y		size in y axis
-	 */
-	//void SetCollisionScale(float x,float y);
-
-	/**
-	 * Sets the size of both the Texture and the collision box to the given size
-	 * 
-	 * @param		&Scale			The size to set the collision box and the texture to
-	 */
-	//void SetScale(Vector2 &scale);
-
-	/**
-	 * Sets the size of both the Texture and the collision box to the given size
-	 *
-	 * @param		x		size in x-axis
-	 * @param		y		size in y axis
-	 */
-	//void SetScale(float x,float y);
-
-	/**
-	 * Return the current position of the main game camera
-	 *
-	 * @return		Current Position of the game's main camera
-	 */
-	//Vector2 GetMainCameraPosition();
-
-	/**
-	 * Returns Box2D world position as game world position
-	 *	
-	 * @param		Point		The Box2D world point to convert to game world point
-	 * @return					The game world point of the Box2D point passed
-	 */
-	//Vector2 GetGlobalPositionLocalOffset(Vector2 point);
-
-	/**
-	 * Returns Box2D world position as game world position
-	 *	
-	 * @param		x			The Box2D world point's x-axis value 
-	 * @param		y			The Box2D world point's y-axis value 
-	 * @return					The gamw world point of the Box2D point passed
-	 */
-	//Vector2 GetGlobalPositionLocalOffset(float x, float y);
 
 	/**
 	 * Sets the Position of the game object to the specified point in the game world
@@ -511,23 +372,7 @@ public:
 	 * @param		x		x-axis velocity
 	 * @param		y		y-axis velocity
 	 */
-	void SetVelocity(float x,float y);
-
-	/**
-	 * Returns the  collision scale vector
-	 *
-	 * @return		Collision scale vector
-	 */
-	//Vector2 GetCollisionScale();
-
-	/**
-	 * Returns current texture draw scale vector.
-	 * Note; This returns the scale of the current texture that was set using the SetDrawScale function. This does NOT return the actual
-	 * size of the texture. To get the actual size of the texture, use the GetWidthAndHeight
-	 *
-	 * @return		The normalized value of the texture draw scale scale vector
-	 */
-	//Vector2 GetDrawScale();	
+	void SetVelocity(float x,float y);	
 
 	/**
 	 * This function returns the current angle of the game object in degrees
@@ -607,53 +452,6 @@ public:
 	string GetTag();
 
 	/**
-	 * Fires a ray from the object's position to the length given, in the angle specified. 
-	 * It then checks for all the objects within the ray with the tag given.
-	 * If it finds an object with a matching tag withing the ray, it returns true or else returns false
-	 *
-	 * @param		_Angle		Angle in which to cast the ray
-	 * @param		_Length		The lenght of the ray to cast
-	 * @param		Tag			The Tag value to check against the objects
-	 * @return		true = if objects found in ray, false = no objects in ray
-	 */
-	//bool RayCast(float angle, float lenght, string tag);
-
-	/**
-	 * Fires a ray from the given position to the given length, in the angle specified. 
-	 * It then checks for all the objects within the ray with the tag given.
-	 * If it finds an object with a matching tag withing the ray, it returns true or else returns false
-	 *
-	 * @param		_StartPosition		The starting position of the ray
-	 * @param		_Angle				Angle in which to cast the ray
-	 * @param		_Length				The lenght of the ray to cast
-	 * @param		Tag					The Tag value to check against the objects
-	 * @return							true = if objects found in ray, false = no objects in ray
-	 */
-	//bool RayCast(Vector2 startPoint,float angle, float lenght, string tag);
-
-	/**
-	 * Returns the actual width and the actual height of the object's current texture, as a Vector2 object
-	 *
-	 * @return			Vector2(Width, Height) of current texture.
-	 */
-	//Vector2 GetWidthAndHeight();
-
-	/**
-	 * Sets the object's collider to a sphere with the given radious rather than the default box shaped collider.
-	 *
-	 * @param		_Radious		The radious of the sphere collider
-	 */
-	//void SetCollisionToSphere(float radius);
-
-	/**
-	 * Sets the object's collider to a custom shape with the given vertices rather than the default box shaped collider.
-	 *
-	 * @param		vertices			A dynamic array of vertices
-	 * @param		_NumberVertices		Number of vertices
-	 */
-	//void SetCollisionToCustom(const b2Vec2* vertices, int numOfVertices);
-
-	/**
 	 * Sets the friction of the game object.
 	 *
 	 * @param		_Friction		The amount of friction to apply to this object
@@ -691,7 +489,9 @@ public:
 	 * @param		rows				How many Rows does this texture have
 	 * @param		columns			How Many Columns does this texture have
 	 */
-	void AddTexture(string textureName, bool isSprite, int rows, int columns);		
+	void AddTexture(string textureName, bool isSprite, int rows, int columns);	
+
+	static void DeleteTexture(string textureName, int textureId);
 
 	/**
 	 * Sets the current texture of the object to the specified texture.
