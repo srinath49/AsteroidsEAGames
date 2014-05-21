@@ -104,10 +104,10 @@ public:
 	
 
 	/*****************************Box2D Physics World Declarations********************************/
-	b2World* phyxWorld;
-	b2Fixture* fix;
-	b2Vec2 gravity;
-	b2World* myWorld;
+	//b2World* phyxWorld;
+	//b2Fixture* fix;
+	//b2Vec2 gravity;
+	//b2World* myWorld;
 	/***************************End of Box2D Physics World Declarations****************************/
 
 	/**
