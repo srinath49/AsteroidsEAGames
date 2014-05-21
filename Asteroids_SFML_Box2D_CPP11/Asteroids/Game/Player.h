@@ -91,6 +91,9 @@ private:
 	sf::Clock fireClock;
 	sf::Time fireTimer;
 
+	sf::SoundBuffer buffer;
+	sf::Sound sound;
+
 	bool firstFire;
 };
 

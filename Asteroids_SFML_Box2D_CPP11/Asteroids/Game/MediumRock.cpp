@@ -25,7 +25,7 @@ void MediumRock::Start()
 	//SetVelocity(0.0f,0.0f);
 	SetTag("Rock");
 	SetState(NormalState);
-	IsTrigger(true);
+	//SetTrigger(true);
 	collisionBox->ApplyTorque(1.0f, true);
 }
 

@@ -725,7 +725,7 @@ Vector2 GameObject::GetWidthAndHeight()
 }
 
 // Trigger the collider 
-void GameObject::IsTrigger(bool trigger)
+void GameObject::SetTrigger(bool trigger)
 {
 	collisionBox->GetFixtureList()->SetSensor(trigger);
 }
@@ -810,12 +810,4 @@ void GameObject::SetCollisionToCustom(const b2Vec2* vertices,int numOfVertices)
 	 collisionBox->CreateFixture(&fixtureDef);
 	 xCollisionScale=1;
 	 yCollisionScale=1;
-}
-
-void GameObject::AddAnimation(string animName, Animation newAnim)
-{
-	AnimationData newData;
-	newData.animName = animName;
-	newData.anim = newAnim;
-	animations.push_back(newData);
 }

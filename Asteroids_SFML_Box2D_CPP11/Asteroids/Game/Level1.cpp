@@ -48,7 +48,7 @@ void Level1::AddObjectsToLayers()
 	//gameEngine->GetLayer(rocksLayer)->AddObjectToLayer(bigRock3);
 	levelDone = false;
 	
-	if(music.openFromFile("Assets/Laser.aif"))
+	if(music.openFromFile("Assets/DarkKnight.ogg"))
 	{
 		music.play();
 	}

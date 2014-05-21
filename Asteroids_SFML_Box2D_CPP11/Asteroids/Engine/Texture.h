@@ -3,7 +3,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <list>
-#include "AnimatedSprite.hpp"
 
 using namespace std;
 

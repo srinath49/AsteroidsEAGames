@@ -18,7 +18,7 @@ void Player::EndContact(GameObject*)
 
 void Player::Start()
 {
-	IsTrigger(true);
+	SetTrigger(true);
 	SetGravity(0.0f);
 	SetVelocity(0.0f,0.0f);
 	SetFriction(0.1f);
@@ -236,6 +236,11 @@ void Player::Fire()
  		newBullet->SetRotation(this->GetRotationAngle());
 		gameEngine->GetLayer(2)->AddObjectToLayer(newBullet);
 		fireTimer = fireClock.getElapsedTime();
+	}
+	if(buffer.loadFromFile("Assets/Lazer.aif"))
+	{
+		sound.setBuffer(buffer);
+		sound.play();
 	}
 }
 

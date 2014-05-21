@@ -8,20 +8,12 @@
 #include "Layer.h"
 #include "TextureManager.h"
 #include "Texture.h"
-#include "AnimatedSprite.hpp"
-#include "Animation.h"
 
 class Engine;
 class Layer;
 class TextureManager;
 
 struct TextureEntry;
-
-struct	AnimationData
-{
-	string animName;
-	Animation anim;
-};
 
 using namespace std;
 
@@ -156,21 +148,6 @@ protected:
 	 * The current texture of the object
 	 */
 	Texture* currentTexture;
-
-	/**
-	 *Stores all the animations inside an AnimationData list
-	 */
-	list<AnimationData> animations;
-
-	/**
-	 * An iterator for traversing the animations list
-	 */
-	list<AnimationData>::iterator anamationsIterator;
-
-	/**
-	 *	The Current Animation to Play
-	 */
-	Animation	currentAnim;
 
 	/**
 	 * The current shape of the collider
@@ -690,7 +667,7 @@ public:
 	 *
 	 * @param		_Trigger		true = makes the object a trigger, false = makes the object a normal physics body.
 	 */
-	void IsTrigger(bool trigger);
+	void SetTrigger(bool trigger);
 
 	/**
 	 * Returns whether or not this object is a trigger
@@ -840,21 +817,6 @@ public:
 	 * Applies a damping value to the  velocity of the object
 	 */
 	void SetAngularDamping(float damping);
-
-	/**
-	 *
-	 */
-	void AddAnimation(string animName, Animation anim);
-
-	/**
-	 *
-	 */
-	void SetCurrentAnimation(Animation anim){currentAnim = anim;}
-
-	/**
-	 *
-	 */
-	Animation GetCurrentAnimation(){return currentAnim;}
 
 	Texture* GetCurrentTexture(){return currentTexture;}
 };

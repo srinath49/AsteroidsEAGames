@@ -36,7 +36,7 @@ public:
 
 	/**
 	 * The Update function on the Game is called by the Engine each frame.
-	 * This is where your game loop should exist.
+	 * This is where the game loop eill exist.
 	 *
 	 * @param		frameNumber			The value of the current frame
 	 */
