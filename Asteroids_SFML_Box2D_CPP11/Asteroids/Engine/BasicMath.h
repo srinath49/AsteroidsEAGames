@@ -14,36 +14,6 @@
 
 #define PI_F 3.1415927f
 
-// Template Vector & Matrix Classes
-
-//template <class T> struct Vector2
-//{
-//    union
-//    {
-//        struct
-//        {
-//            T x;
-//            T y;
-//        };
-//        struct
-//        {
-//            T r;
-//            T g;
-//        };
-//        struct
-//        {
-//            T u;
-//            T v;
-//        };
-//    };
-//
-//    T& operator[](unsigned int index)
-//    {
-//        return static_cast<T*>(this)[index];
-//    }
-//
-//    Vector2(T _x = 0, T _y = 0) : x(_x), y(_y) { }
-//};
 
 class Vector2
 {
@@ -214,13 +184,7 @@ template <class T> struct Matrix4x4
     }
 };
 
-// Template Vector Operations
 
-//template <class T>
-//T dot(Vector2<T> a, Vector2<T> b)
-//{
-//    return a.x * b.x + a.y * b.y;
-//}
 
 template <class T>
 T dot(Vector3<T> a, Vector3<T> b)
@@ -234,11 +198,6 @@ T dot(Vector4<T> a, Vector4<T> b)
     return a.x * b.x + a.y * b.y + a.z * b.z + a.w + b.w;
 }
 
-//template <class T>
-//T length(Vector2<T> a)
-//{
-//    return sqrt(a.x * a.x + a.y * a.y);
-//}
 
 template <class T>
 T length(Vector3<T> a)
@@ -258,12 +217,6 @@ Vector3<T> cross(Vector3<T> a, Vector3<T> b)
     return Vector3<T>((a.y*b.z)-(a.z*b.y), (a.z*b.x)-(a.x*b.z), (a.x*b.y)-(a.y*b.x));
 }
 
-//template <class T>
-//Vector2<T> normalize(Vector2<T> a)
-//{
-//    T len = length(a);
-//    return Vector2<T>(a.x / len, a.y / len);
-//}
 
 template <class T>
 Vector3<T> normalize(Vector3<T> a)
@@ -279,19 +232,6 @@ Vector4<T> normalize(Vector4<T> a)
     return Vector4<T>(a.x / len, a.y / len, a.z / len, a.w / len);
 }
 
-// Template Vector Operators
-
-//template <class T>
-//Vector2<T> operator-(Vector2<T> a, Vector2<T> b)
-//{
-//    return Vector2<T>(a.x - b.x, a.y - b.y);
-//}
-//
-//template <class T>
-//Vector2<T> operator-(Vector2<T> a)
-//{
-//    return Vector2<T>( -a.x, -a.y);
-//}
 
 template <class T>
 Vector3<T> operator-(Vector3<T> a, Vector3<T> b)
@@ -317,11 +257,6 @@ Vector4<T> operator-(Vector4<T> a)
     return Vector4<T>( -a.x, -a.y, -a.z, -a.w);
 }
 
-//template <class T>
-//Vector2<T> operator+(Vector2<T> a, Vector2<T> b)
-//{
-//    return Vector2<T>(a.x + b.x, a.y + b.y);
-//}
 
 template <class T>
 Vector3<T> operator+(Vector3<T> a, Vector3<T> b)
@@ -335,29 +270,6 @@ Vector4<T> operator+(Vector4<T> a, Vector4<T> b)
     return Vector4<T>(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
 }
 
-//template <class T>
-//Vector2<T> operator*(Vector2<T> a, T s)
-//{
-//    return Vector2<T>(a.x * s, a.y * s);
-//}
-//
-//template <class T>
-//Vector2<T> operator*(T s, Vector2<T> a)
-//{
-//    return a * s;
-//}
-//
-//template <class T>
-//Vector2<T> operator*(Vector2<T> a, Vector2<T> b)
-//{
-//    return Vector2<T>(a.x * b.x, a.y * b.y);
-//}
-
-//template <class T>
-//Vector2<T> operator/(Vector2<T> a, T s)
-//{
-//    return Vector2<T>(a.x / s, a.y / s);
-//}
 
 template <class T>
 Vector3<T> operator*(Vector3<T> a, T s)

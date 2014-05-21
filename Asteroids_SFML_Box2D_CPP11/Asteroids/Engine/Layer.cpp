@@ -32,7 +32,7 @@ void Layer::RemoveObject(string objectName)
 	{
   		m_deleteQueue.push_back(objectName);
 		n->isDestroyed = true;
-		n->pointerPressed = false;
+		//n->pointerPressed = false;
 		n->OnDestroy();
 		//n->textureHolder.remove_if(true);
 		//n->collisionBox->GetWorld()->DestroyBody(n->collisionBox);
